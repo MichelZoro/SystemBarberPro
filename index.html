@@ -22,20 +22,22 @@
         .cactus-gray { color: #85929E; }
         .bg-cactus { background-color: #85929E; }
         .accent-gold { color: #D4AF37; }
+        
+        /* Ocultar elementos por defecto */
+        .hidden { display: none !important; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-8 flex flex-col min-h-screen">
 
-    <div class="max-w-6xl mx-auto">
-        <header class="flex justify-between items-center mb-10">
-            <div>
+    <div class="max-w-6xl mx-auto w-full flex-grow">
+        <header class="flex justify-between items-center mb-10 text-center md:text-left">
+            <div class="w-full">
                 <h1 class="text-3xl font-light tracking-widest uppercase">Barber <span class="font-bold accent-gold">Elite</span></h1>
-                <p class="cactus-gray text-sm">Gestión Profesional de Barbería</p>
+                <p class="cactus-gray text-sm">Gestión Profesional</p>
             </div>
-            <div class="flex gap-4">
-                <button onclick="switchView('cliente')" class="px-4 py-2 rounded-full border border-white/20 hover:bg-white/10 transition">Vista Cliente</button>
-                <button onclick="switchView('admin')" class="px-4 py-2 rounded-full bg-cactus text-gray-900 font-semibold hover:opacity-90 transition">Admin Panel</button>
-            </div>
+            <button id="btn-logout" onclick="cerrarSesion()" class="hidden px-4 py-2 rounded-full border border-red-500/50 text-red-400 hover:bg-red-500/10 transition text-sm">
+                Salir
+            </button>
         </header>
 
         <main id="main-content">
@@ -44,13 +46,13 @@
                     <h2 class="text-2xl mb-4">Reserva tu Turno</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <input type="text" placeholder="Tu Nombre" class="bg-white/5 border border-white/10 rounded-lg p-3 outline-none focus:border-cactus-gray">
-                        <select id="select-peluquero" class="bg-white/5 border border-white/10 rounded-lg p-3 outline-none">
+                        <select class="bg-white/5 border border-white/10 rounded-lg p-3 outline-none">
                             <option value="1">Peluquero: Franco</option>
                             <option value="2">Peluquero: Mateo</option>
                         </select>
                     </div>
                     
-                    <div class="grid grid-cols-4 gap-2 mb-6" id="slots-container">
+                    <div class="grid grid-cols-3 md:grid-cols-4 gap-2 mb-6" id="slots-container">
                         </div>
 
                     <div class="flex flex-col gap-3">
@@ -60,15 +62,16 @@
                 </div>
             </section>
 
-            <section id="view-admin" class="hidden space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <section id="view-interno" class="hidden space-y-6">
+                
+                <div id="financial-stats" class="grid grid-cols-1 md:grid-cols-3 gap-6 hidden">
                     <div class="glass-card p-6 border-l-4 border-green-500">
                         <p class="cactus-gray text-xs uppercase tracking-wider">Ganancias Hoy</p>
                         <h3 class="text-3xl font-bold">$125.000</h3>
                     </div>
                     <div class="glass-card p-6 border-l-4 border-blue-500">
-                        <p class="cactus-gray text-xs uppercase tracking-wider">Turnos Totales (Global)</p>
-                        <h3 class="text-3xl font-bold" id="total-slots">32/32 Disponibles</h3>
+                        <p class="cactus-gray text-xs uppercase tracking-wider">Turnos Ocupados</p>
+                        <h3 class="text-3xl font-bold">14/32</h3>
                     </div>
                     <div class="glass-card p-6 border-l-4 border-red-500">
                         <p class="cactus-gray text-xs uppercase tracking-wider">Gastos Insumos</p>
@@ -77,20 +80,24 @@
                 </div>
 
                 <div class="glass-card p-6">
-                    <div class="flex border-b border-white/10 mb-6 overflow-x-auto">
-                        <button class="px-6 py-3 border-b-2 border-cactus">Peluquero: Franco</button>
-                        <button class="px-6 py-3 opacity-50">Peluquero: Mateo</button>
-                        <button class="px-6 py-3 opacity-50">Inventario</button>
-                        <button class="px-6 py-3 opacity-50">Configurar Horarios</button>
+                    <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                        <div class="flex border-b border-white/10 overflow-x-auto w-full md:w-auto">
+                            <button class="px-4 py-2 border-b-2 border-cactus text-sm md:text-base">Franco</button>
+                            <button class="px-4 py-2 opacity-50 text-sm md:text-base">Mateo</button>
+                        </div>
+                        
+                        <button onclick="cargarGasto()" class="px-4 py-2 bg-red-900/40 text-red-300 border border-red-500/30 rounded-lg hover:bg-red-900/60 transition text-sm">
+                            + Cargar Gasto Insumo
+                        </button>
                     </div>
 
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left">
+                        <table class="w-full text-left min-w-[600px]">
                             <thead class="text-xs uppercase cactus-gray">
                                 <tr>
                                     <th class="p-4">Hora</th>
                                     <th class="p-4">Cliente</th>
-                                    <th class="p-4">Estado Pago</th>
+                                    <th class="p-4">Estado</th>
                                     <th class="p-4">Acción</th>
                                 </tr>
                             </thead>
@@ -103,21 +110,71 @@
         </main>
     </div>
 
-    <script>
-        // Lógica de Navegación
-        function switchView(view) {
-            document.getElementById('view-cliente').classList.toggle('hidden', view !== 'cliente');
-            document.getElementById('view-admin').classList.toggle('hidden', view !== 'admin');
-        }
+    <footer class="text-center p-4 mt-auto">
+        <button onclick="pedirAcceso()" class="opacity-20 hover:opacity-100 transition text-xl" title="Acceso Personal">
+            🔒
+        </button>
+    </footer>
 
-        // Simulación de Datos
+    <script>
+        // --- DATOS SIMULADOS ---
         const slots = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "15:00", "15:30", "16:00", "16:30"];
         const appointments = [
             { time: "09:00", name: "Carlos Perez", paid: "Seña", status: "Confirmado" },
             { time: "09:30", name: "Juan Gomez", paid: "Pendiente", status: "Confirmado" }
         ];
 
-        // Renderizar Slots Cliente
+        // --- SISTEMA DE LOGIN Y ROLES ---
+        function pedirAcceso() {
+            const pin = prompt("Ingrese su PIN de acceso:");
+            
+            if (pin === "admin") {
+                // Modo Dueño: Ve todo
+                document.getElementById('view-cliente').classList.add('hidden');
+                document.getElementById('view-interno').classList.remove('hidden');
+                document.getElementById('financial-stats').classList.remove('hidden');
+                document.getElementById('btn-logout').classList.remove('hidden');
+                alert("Bienvenido Administrador. Tienes acceso completo.");
+            } else if (pin === "1234") {
+                // Modo Peluquero/Empleado: No ve finanzas
+                document.getElementById('view-cliente').classList.add('hidden');
+                document.getElementById('view-interno').classList.remove('hidden');
+                document.getElementById('financial-stats').classList.add('hidden'); // ESTO OCULTA LAS GANANCIAS
+                document.getElementById('btn-logout').classList.remove('hidden');
+                alert("Acceso de Personal. Modo operativo activado.");
+            } else if (pin !== null) {
+                alert("PIN incorrecto.");
+            }
+        }
+
+        function cerrarSesion() {
+            document.getElementById('view-interno').classList.add('hidden');
+            document.getElementById('view-cliente').classList.remove('hidden');
+            document.getElementById('btn-logout').classList.add('hidden');
+        }
+
+        function cargarGasto() {
+            const concepto = prompt("¿Qué insumo se compró? (Ej: Cera, Filos, Alcohol)");
+            if(concepto) {
+                const monto = prompt(`¿Cuánto se gastó en ${concepto}?`);
+                if(monto) {
+                    alert(`✅ Gasto de $${monto} en ${concepto} registrado correctamente.`);
+                    // Aquí en el futuro se guardará en la base de datos
+                }
+            }
+        }
+
+        function anotarClienteManual(hora) {
+            const nombre = prompt(`Anotar cliente (sin turno previo) para las ${hora}:`);
+            if(nombre) {
+                alert(`✅ Cliente ${nombre} anotado a las ${hora}.`);
+                // Aquí en el futuro se actualizará la tabla
+            }
+        }
+
+        // --- RENDERIZADO DE INTERFAZ ---
+        
+        // 1. Renderizar botones vista cliente
         const slotsContainer = document.getElementById('slots-container');
         slots.forEach(time => {
             const btn = document.createElement('button');
@@ -126,20 +183,30 @@
             slotsContainer.appendChild(btn);
         });
 
-        // Renderizar Tabla Admin
+        // 2. Renderizar tabla vista interna
         const adminTable = document.getElementById('admin-table-body');
         slots.forEach(time => {
             const appt = appointments.find(a => a.time === time);
             const row = document.createElement('tr');
             row.className = "border-b border-white/5 hover:bg-white/5";
-            row.innerHTML = `
-                <td class="p-4 font-bold text-cactus-gray">${time}</td>
-                <td class="p-4">${appt ? appt.name : '<span class="opacity-30">Libre</span>'}</td>
-                <td class="p-4">${appt ? `<span class="px-2 py-1 rounded text-xs ${appt.paid === 'Seña' ? 'bg-blue-500/20 text-blue-400' : 'bg-yellow-500/20 text-yellow-400'}">${appt.paid}</span>` : '-'}</td>
-                <td class="p-4">
-                    ${appt ? `<button class="text-xs bg-green-600/20 text-green-400 px-3 py-1 rounded border border-green-500/50">WhatsApp</button>` : '<button class="text-xs opacity-50">Bloquear</button>'}
-                </td>
-            `;
+            
+            if(appt) {
+                // Si hay turno ocupado
+                row.innerHTML = `
+                    <td class="p-4 font-bold text-cactus-gray">${time}</td>
+                    <td class="p-4">${appt.name}</td>
+                    <td class="p-4"><span class="px-2 py-1 rounded text-xs ${appt.paid === 'Seña' ? 'bg-blue-500/20 text-blue-400' : 'bg-yellow-500/20 text-yellow-400'}">${appt.paid}</span></td>
+                    <td class="p-4"><button class="text-xs bg-green-600/20 text-green-400 px-3 py-1 rounded border border-green-500/50">Avisar WhatsApp</button></td>
+                `;
+            } else {
+                // Si el turno está libre (Permite anotar cliente de paso)
+                row.innerHTML = `
+                    <td class="p-4 font-bold opacity-50">${time}</td>
+                    <td class="p-4 opacity-30 italic">Libre</td>
+                    <td class="p-4">-</td>
+                    <td class="p-4"><button onclick="anotarClienteManual('${time}')" class="text-xs bg-white/10 text-white px-3 py-1 rounded border border-white/20 hover:bg-white/20 transition">+ Anotar Local</button></td>
+                `;
+            }
             adminTable.appendChild(row);
         });
     </script>
