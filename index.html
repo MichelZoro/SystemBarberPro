@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barber Pro Elite | Gestión</title>
+    <title>Barber Pro Elite | Cloud Sync</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -30,7 +30,9 @@
             color: white !important;
             padding: 12px;
             border-radius: 8px;
+            outline: none;
         }
+        input:focus { border-color: #85929E; }
     </style>
 </head>
 <body class="p-4 md:p-8 flex flex-col min-h-screen">
@@ -39,42 +41,45 @@
         <header class="flex justify-between items-center mb-8">
             <div>
                 <h1 class="text-3xl font-light tracking-widest uppercase">Barber <span class="font-bold accent-gold">Elite</span></h1>
-                <p class="cactus-gray text-xs" id="app-status">Sistema de Gestión Profesional</p>
+                <p class="cactus-gray text-[10px] uppercase tracking-widest" id="app-status">Cloud Sync Active</p>
             </div>
             <button id="btn-logout" onclick="cerrarSesion()" class="hidden px-4 py-2 rounded-full border border-red-500/50 text-red-400 hover:bg-red-500/10 transition text-sm">Salir</button>
         </header>
 
         <main>
             <section id="view-cliente" class="space-y-6">
-                <div class="glass-card p-8 max-w-2xl mx-auto text-center">
+                <div class="glass-card p-8 max-w-2xl mx-auto text-center border-t-4 border-accent-gold">
                     <h2 class="text-2xl mb-6 font-semibold">Reserva tu Turno</h2>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <input type="text" id="c-nombre" placeholder="Tu Nombre">
-                        <select id="c-barbero" onchange="cambiarBarberoCliente()">
-                            </select>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-left">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] cactus-gray ml-2">TU NOMBRE</label>
+                            <input type="text" id="c-nombre" placeholder="Ej: Juan Pérez">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[10px] cactus-gray ml-2">ELEGIR BARBERO</label>
+                            <select id="c-barbero" onchange="cambiarBarberoCliente()"></select>
+                        </div>
                     </div>
 
                     <p class="text-xs cactus-gray mb-3 uppercase tracking-widest">Horarios disponibles</p>
-                    <div id="c-slots" class="grid grid-cols-3 md:grid-cols-4 gap-2 mb-8">
-                        </div>
+                    <div id="c-slots" class="grid grid-cols-3 md:grid-cols-4 gap-2 mb-8"></div>
 
                     <div class="grid grid-cols-1 gap-3">
-                        <button onclick="abrirPago('Transferencia')" class="py-4 bg-white text-black font-bold rounded-xl hover:bg-cactus transition uppercase text-sm">Pagar Seña (Transferencia)</button>
+                        <button onclick="abrirPago()" class="py-4 bg-white text-black font-bold rounded-xl hover:bg-cactus transition uppercase text-sm">Pagar Seña (Transferencia)</button>
                         <button onclick="confirmarReserva('Efectivo')" class="py-4 border border-white/20 rounded-xl hover:bg-white/5 transition uppercase text-sm">Reservar (Pago en Local)</button>
                     </div>
                 </div>
             </section>
 
-            <div id="modal-pago" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
-                <div class="glass-card p-8 max-w-sm w-full text-center">
-                    <h3 class="text-xl font-bold mb-4">Datos de Transferencia</h3>
+            <div id="modal-pago" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 hidden z-50">
+                <div class="glass-card p-8 max-w-sm w-full text-center border border-accent-gold/30">
+                    <h3 class="text-xl font-bold mb-4">Transferencia Bancaria</h3>
                     <p class="text-sm cactus-gray mb-2">Barbero: <span id="pago-barbero-nombre" class="text-white font-bold"></span></p>
                     <div class="bg-white/5 p-4 rounded-lg mb-6 border border-cactus/30">
-                        <p class="text-xs uppercase cactus-gray">Alias de cuenta:</p>
-                        <p id="pago-alias" class="text-lg font-mono text-cactus-gray mt-1"></p>
+                        <p class="text-[10px] uppercase cactus-gray">Alias de cuenta:</p>
+                        <p id="pago-alias" class="text-lg font-mono text-accent-gold mt-1"></p>
                     </div>
-                    <p class="text-xs italic mb-6">Una vez realizada la transferencia, presiona confirmar.</p>
                     <button onclick="confirmarReserva('Transferencia')" class="w-full py-3 bg-cactus text-gray-900 font-bold rounded-lg mb-2">Confirmar Pago</button>
                     <button onclick="cerrarModal()" class="w-full py-3 text-sm opacity-50">Cancelar</button>
                 </div>
@@ -86,9 +91,9 @@
                         <p class="text-[10px] uppercase cactus-gray">Caja Estimada</p>
                         <h4 id="stat-caja" class="text-2xl font-bold">$0</h4>
                     </div>
-                    <div id="btn-config" onclick="verTab('config')" class="glass-card p-6 border-l-4 border-accent-gold cursor-pointer hover:bg-white/5">
-                        <p class="text-[10px] uppercase cactus-gray">Configuración</p>
-                        <h4 class="text-xl font-bold">Ajustes Barbería</h4>
+                    <div onclick="verTab('config')" class="glass-card p-6 border-l-4 border-accent-gold cursor-pointer hover:bg-white/5">
+                        <p class="text-[10px] uppercase cactus-gray">Panel de Control</p>
+                        <h4 class="text-xl font-bold">Ajustes & Personal</h4>
                     </div>
                     <div class="glass-card p-6 border-l-4 border-red-500">
                         <p class="text-[10px] uppercase cactus-gray">Insumos</p>
@@ -96,8 +101,7 @@
                     </div>
                 </div>
 
-                <div class="flex gap-2 overflow-x-auto pb-2" id="admin-tabs">
-                    </div>
+                <div class="flex gap-2 overflow-x-auto pb-2" id="admin-tabs"></div>
 
                 <div id="tab-agenda" class="glass-card p-6">
                     <div class="flex justify-between items-center mb-6">
@@ -120,11 +124,27 @@
                 </div>
 
                 <div id="tab-config" class="glass-card p-6 hidden">
-                    <h3 class="text-xl font-bold mb-6">Ajustes del Sistema</h3>
-                    <div id="config-list" class="space-y-4">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">Ajustes del Sistema</h3>
+                        <button onclick="verTab('agenda')" class="text-xs opacity-50 underline">Volver a Agenda</button>
+                    </div>
+                    
+                    <div class="mb-8 p-4 bg-white/5 rounded-xl border border-accent-gold/20">
+                        <p class="text-xs font-bold text-accent-gold mb-3 uppercase">Seguridad Administrador</p>
+                        <div class="flex gap-2">
+                            <input type="text" id="cfg-admin-pin" placeholder="Nuevo PIN Admin" class="flex-grow text-sm">
+                            <button onclick="cambiarPinAdmin()" class="bg-white/10 px-4 rounded-lg text-xs hover:bg-white/20">Actualizar</button>
                         </div>
-                    <button onclick="guardarConfiguracion()" class="mt-6 w-full py-3 bg-cactus text-black font-bold rounded-lg">Guardar Cambios</button>
-                    <button onclick="verTab('agenda')" class="mt-2 w-full py-2 text-sm opacity-50 text-white">Volver a Agenda</button>
+                    </div>
+
+                    <p class="text-xs font-bold text-cactus-gray mb-3 uppercase">Equipo de Barberos</p>
+                    <div id="config-list" class="space-y-4 mb-6"></div>
+                    
+                    <button onclick="agregarBarbero()" class="w-full py-4 border-2 border-dashed border-white/20 rounded-xl text-sm cactus-gray hover:border-cactus hover:text-white transition">
+                        + Agregar Nuevo Barbero
+                    </button>
+
+                    <button onclick="guardarConfiguracion()" class="mt-8 w-full py-4 bg-white text-black font-bold rounded-xl shadow-lg">Guardar Todo y Sincronizar</button>
                 </div>
             </section>
         </main>
@@ -135,30 +155,96 @@
     </footer>
 
     <script>
-        // --- BASE DE DATOS LOCAL (PERSISTENTE) ---
         const HORARIOS_BASE = ["09:00","09:30","10:00","10:30","11:00","11:30","15:00","15:30","16:00","16:30","17:00","17:30"];
         
+        // Base de datos inicial
         let db = JSON.parse(localStorage.getItem('barber_db')) || {
             barberos: [
-                { id: 0, nombre: "Franco", alias: "franco.barber.mp", pin: "1111", turnos: {} },
-                { id: 1, nombre: "Mateo", alias: "mateo.corte.ok", pin: "2222", turnos: {} }
+                { id: Date.now(), nombre: "Franco", alias: "franco.mp", pin: "1111", turnos: {} }
             ],
             insumos: [],
             admin_pin: "admin"
         };
 
-        let barberoActivoID = 0;
+        let barberoActivoID = db.barberos[0]?.id;
         let horaSeleccionada = null;
+        let esModoAdmin = false;
 
         function save() {
             localStorage.setItem('barber_db', JSON.stringify(db));
         }
 
-        // --- LÓGICA CLIENTE ---
+        // --- FUNCIONES DE ADMINISTRACIÓN ---
+        function agregarBarbero() {
+            const nuevo = {
+                id: Date.now(),
+                nombre: "Nuevo Barbero",
+                alias: "alias.mp",
+                pin: "0000",
+                turnos: {}
+            };
+            db.barberos.push(nuevo);
+            renderConfig();
+        }
+
+        function eliminarBarbero(id) {
+            if(db.barberos.length === 1) return alert("Debe haber al menos un barbero.");
+            if(confirm("¿Seguro que quieres eliminar a este barbero? Perderás su agenda.")) {
+                db.barberos = db.barberos.filter(b => b.id !== id);
+                if(barberoActivoID === id) barberoActivoID = db.barberos[0].id;
+                renderConfig();
+            }
+        }
+
+        function cambiarPinAdmin() {
+            const nuevoPin = document.getElementById('cfg-admin-pin').value;
+            if(nuevoPin.length < 4) return alert("PIN muy corto.");
+            db.admin_pin = nuevoPin;
+            alert("PIN de administrador actualizado. No lo olvides.");
+        }
+
+        // --- RENDERIZADO CONFIG ---
+        function renderConfig() {
+            const container = document.getElementById('config-list');
+            document.getElementById('cfg-admin-pin').value = db.admin_pin;
+            
+            container.innerHTML = db.barberos.map((b) => `
+                <div class="p-4 glass-card border border-white/10 space-y-3 relative">
+                    <button onclick="eliminarBarbero(${b.id})" class="absolute top-4 right-4 text-red-500 opacity-50 hover:opacity-100 font-bold text-xl">✕</button>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] cactus-gray">NOMBRE</label>
+                            <input type="text" onchange="updateB(${b.id}, 'nombre', this.value)" value="${b.nombre}" class="text-sm">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] cactus-gray">ALIAS MERCADO PAGO</label>
+                            <input type="text" onchange="updateB(${b.id}, 'alias', this.value)" value="${b.alias}" class="text-sm">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] cactus-gray">PIN ACCESO (4 DÍGITOS)</label>
+                            <input type="text" onchange="updateB(${b.id}, 'pin', this.value)" value="${b.pin}" class="text-sm">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateB(id, campo, valor) {
+            const b = db.barberos.find(x => x.id === id);
+            if(b) b[campo] = valor;
+        }
+
+        function guardarConfiguracion() {
+            save();
+            alert("Sincronizando datos...");
+            location.reload();
+        }
+
+        // --- LÓGICA DE TURNOS (SIMILAR A ANTERIOR) ---
         function inicializarApp() {
             const select = document.getElementById('c-barbero');
             select.innerHTML = db.barberos.map(b => `<option value="${b.id}">${b.nombre}</option>`).join('');
-            barberoActivoID = db.barberos[0].id;
+            if(!barberoActivoID && db.barberos.length > 0) barberoActivoID = db.barberos[0].id;
             renderSlotsCliente();
         }
 
@@ -170,6 +256,7 @@
         function renderSlotsCliente() {
             const container = document.getElementById('c-slots');
             const barbero = db.barberos.find(b => b.id === barberoActivoID);
+            if(!barbero) return;
             container.innerHTML = HORARIOS_BASE.map(h => {
                 const ocupado = barbero.turnos[h];
                 if (ocupado) return `<div class="p-3 text-[10px] bg-white/5 border border-white/5 rounded-lg opacity-20 text-center">${h}<br>Ocupado</div>`;
@@ -183,10 +270,9 @@
             btn.classList.add('bg-cactus', 'text-black', 'border-cactus');
         }
 
-        function abrirPago(tipo) {
+        function abrirPago() {
             const nombre = document.getElementById('c-nombre').value;
             if (!nombre || !horaSeleccionada) return alert("Completa tu nombre y elige un horario.");
-            
             const barbero = db.barberos.find(b => b.id === barberoActivoID);
             document.getElementById('pago-barbero-nombre').innerText = barbero.nombre;
             document.getElementById('pago-alias').innerText = barbero.alias;
@@ -198,25 +284,23 @@
         function confirmarReserva(metodo) {
             const nombre = document.getElementById('c-nombre').value;
             const barbero = db.barberos.find(b => b.id === barberoActivoID);
-            
             barbero.turnos[horaSeleccionada] = { cliente: nombre, pago: metodo };
             save();
-            alert(`¡Turno Confirmado con ${barbero.nombre} a las ${horaSeleccionada}!`);
-            cerrarModal();
+            alert(`¡Turno reservado para las ${horaSeleccionada}!`);
             location.reload();
         }
 
-        // --- LÓGICA INTERNA (ADMIN/STAFF) ---
         function pedirAcceso() {
             const pass = prompt("PIN de Acceso:");
             if (!pass) return;
-
             if (pass === db.admin_pin) {
+                esModoAdmin = true;
                 mostrarInterno(true);
             } else {
                 const b = db.barberos.find(x => x.pin === pass);
                 if (b) {
                     barberoActivoID = b.id;
+                    esModoAdmin = false;
                     mostrarInterno(false);
                 } else {
                     alert("PIN Incorrecto.");
@@ -228,8 +312,7 @@
             document.getElementById('view-cliente').classList.add('hidden');
             document.getElementById('view-interno').classList.remove('hidden');
             document.getElementById('btn-logout').classList.remove('hidden');
-            if(esAdmin) document.getElementById('admin-stats').classList.remove('hidden');
-            
+            document.getElementById('admin-stats').classList.toggle('hidden', !esAdmin);
             renderTabsAdmin();
             verTab('agenda');
         }
@@ -258,9 +341,9 @@
 
         function renderAgenda() {
             const b = db.barberos.find(x => x.id === barberoActivoID);
+            if(!b) return;
             document.getElementById('agenda-nombre').innerText = b.nombre;
             const tbody = document.getElementById('agenda-body');
-            
             tbody.innerHTML = HORARIOS_BASE.map(h => {
                 const t = b.turnos[h];
                 return `
@@ -276,7 +359,6 @@
                     </tr>
                 `;
             }).join('');
-            
             actualizarFinanzas();
         }
 
@@ -289,7 +371,7 @@
         }
 
         function borrarTurno(h) {
-            if(confirm("¿Borrar este turno?")) {
+            if(confirm("¿Borrar turno?")) {
                 delete db.barberos.find(b => b.id === barberoActivoID).turnos[h];
                 save();
                 renderAgenda();
@@ -308,36 +390,10 @@
 
         function actualizarFinanzas() {
             let totalCaja = 0;
-            db.barberos.forEach(b => {
-                totalCaja += Object.keys(b.turnos).length * 10000; // Supongamos 10000 por corte
-            });
+            db.barberos.forEach(b => { totalCaja += Object.keys(b.turnos).length * 10000; });
             let totalInsumos = db.insumos.reduce((acc, i) => acc + i.valor, 0);
-            
             document.getElementById('stat-caja').innerText = `$${totalCaja.toLocaleString()}`;
             document.getElementById('stat-insumos').innerText = `$${totalInsumos.toLocaleString()}`;
-        }
-
-        function renderConfig() {
-            const container = document.getElementById('config-list');
-            container.innerHTML = db.barberos.map((b, idx) => `
-                <div class="p-4 border border-white/10 rounded-xl space-y-3">
-                    <p class="text-xs font-bold text-cactus-gray">BARBERO #${idx + 1}</p>
-                    <input type="text" id="cfg-n-${idx}" value="${b.nombre}" class="w-full text-sm" placeholder="Nombre">
-                    <input type="text" id="cfg-a-${idx}" value="${b.alias}" class="w-full text-sm" placeholder="Alias MP">
-                    <input type="text" id="cfg-p-${idx}" value="${b.pin}" class="w-full text-sm" placeholder="PIN de acceso">
-                </div>
-            `).join('');
-        }
-
-        function guardarConfiguracion() {
-            db.barberos.forEach((b, idx) => {
-                b.nombre = document.getElementById(`cfg-n-${idx}`).value;
-                b.alias = document.getElementById(`cfg-a-${idx}`).value;
-                b.pin = document.getElementById(`cfg-p-${idx}`).value;
-            });
-            save();
-            alert("Configuración guardada.");
-            location.reload();
         }
 
         function cerrarSesion() { location.reload(); }
