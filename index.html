@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barber Pro Elite | Cloud Sync</title>
+    <title>Barber Pro Elite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -22,7 +22,6 @@
         .cactus-gray { color: #85929E; }
         .bg-cactus { background-color: #85929E; }
         .accent-gold { color: #D4AF37; }
-        .hidden { display: none !important; }
         
         input, select {
             background: rgba(255, 255, 255, 0.08) !important;
@@ -31,8 +30,11 @@
             padding: 12px;
             border-radius: 8px;
             outline: none;
+            width: 100%;
         }
-        input:focus { border-color: #85929E; }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
+        .servicio-btn.active { background-color: #D4AF37; color: black; border-color: #D4AF37; }
+        .barbero-card.active { border-color: #D4AF37; background: rgba(212, 175, 55, 0.1); }
     </style>
 </head>
 <body class="p-4 md:p-8 flex flex-col min-h-screen">
@@ -41,32 +43,52 @@
         <header class="flex justify-between items-center mb-8">
             <div>
                 <h1 class="text-3xl font-light tracking-widest uppercase">Barber <span class="font-bold accent-gold">Elite</span></h1>
-                <p class="cactus-gray text-[10px] uppercase tracking-widest" id="app-status">Cloud Sync Active</p>
+                <p class="cactus-gray text-[10px] uppercase tracking-widest" id="app-status">Sistema de Gestión</p>
             </div>
             <button id="btn-logout" onclick="cerrarSesion()" class="hidden px-4 py-2 rounded-full border border-red-500/50 text-red-400 hover:bg-red-500/10 transition text-sm">Salir</button>
         </header>
 
         <main>
-            <section id="view-cliente" class="space-y-6">
-                <div class="glass-card p-8 max-w-2xl mx-auto text-center border-t-4 border-accent-gold">
-                    <h2 class="text-2xl mb-6 font-semibold">Reserva tu Turno</h2>
+            <section id="view-welcome" class="flex flex-col items-center justify-center space-y-6 mt-10">
+                <div class="glass-card p-10 max-w-md w-full text-center border-t-4 border-accent-gold">
+                    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=200&h=200" alt="Logo Barbería" class="w-32 h-32 rounded-full mx-auto mb-6 object-cover border-2 border-accent-gold">
+                    <h2 class="text-2xl font-bold mb-2">Bienvenido</h2>
+                    <p class="text-sm cactus-gray mb-6">Por favor, ingresa tu nombre para continuar</p>
+                    <input type="text" id="w-nombre" placeholder="Tu Nombre y Apellido" class="mb-4 text-center">
+                    <button onclick="entrarApp()" class="w-full py-3 bg-accent-gold text-black font-bold rounded-lg hover:opacity-90 transition">INGRESAR</button>
+                </div>
+            </section>
+
+            <section id="view-cliente" class="hidden space-y-6">
+                <div class="glass-card p-6 md:p-8 max-w-3xl mx-auto border-t-4 border-accent-gold">
+                    <h2 id="saludo-cliente" class="text-2xl mb-6 font-semibold">Hola, Cliente</h2>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-left">
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[10px] cactus-gray ml-2">TU NOMBRE</label>
-                            <input type="text" id="c-nombre" placeholder="Ej: Juan Pérez">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="text-[10px] cactus-gray ml-2 uppercase">1. Elige el Día</label>
+                            <input type="date" id="c-fecha" onchange="renderSlotsCliente()" class="mt-1">
                         </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[10px] cactus-gray ml-2">ELEGIR BARBERO</label>
-                            <select id="c-barbero" onchange="cambiarBarberoCliente()"></select>
+                        <div>
+                            <label class="text-[10px] cactus-gray ml-2 uppercase">2. Elige tu Barbero</label>
+                            <div id="c-lista-barberos" class="flex gap-2 overflow-x-auto mt-1 pb-2"></div>
                         </div>
                     </div>
 
-                    <p class="text-xs cactus-gray mb-3 uppercase tracking-widest">Horarios disponibles</p>
+                    <div class="mb-6">
+                        <label class="text-[10px] cactus-gray ml-2 uppercase mb-2 block">3. ¿Qué te vas a hacer?</label>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="toggleServicio('Corte', this)" class="servicio-btn px-4 py-2 border border-white/20 rounded-full text-sm hover:bg-white/5">Corte</button>
+                            <button onclick="toggleServicio('Barba', this)" class="servicio-btn px-4 py-2 border border-white/20 rounded-full text-sm hover:bg-white/5">Barba</button>
+                            <button onclick="toggleServicio('Cejas', this)" class="servicio-btn px-4 py-2 border border-white/20 rounded-full text-sm hover:bg-white/5">Perfilado Cejas</button>
+                            <button onclick="toggleServicio('Color', this)" class="servicio-btn px-4 py-2 border border-white/20 rounded-full text-sm hover:bg-white/5">Color</button>
+                        </div>
+                    </div>
+
+                    <label class="text-[10px] cactus-gray ml-2 uppercase block mb-2">4. Horarios Disponibles</label>
                     <div id="c-slots" class="grid grid-cols-3 md:grid-cols-4 gap-2 mb-8"></div>
 
-                    <div class="grid grid-cols-1 gap-3">
-                        <button onclick="abrirPago()" class="py-4 bg-white text-black font-bold rounded-xl hover:bg-cactus transition uppercase text-sm">Pagar Seña (Transferencia)</button>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <button onclick="abrirPago()" class="py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition uppercase text-sm">Pagar Seña (Transferencia)</button>
                         <button onclick="confirmarReserva('Efectivo')" class="py-4 border border-white/20 rounded-xl hover:bg-white/5 transition uppercase text-sm">Reservar (Pago en Local)</button>
                     </div>
                 </div>
@@ -75,45 +97,53 @@
             <div id="modal-pago" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 hidden z-50">
                 <div class="glass-card p-8 max-w-sm w-full text-center border border-accent-gold/30">
                     <h3 class="text-xl font-bold mb-4">Transferencia Bancaria</h3>
-                    <p class="text-sm cactus-gray mb-2">Barbero: <span id="pago-barbero-nombre" class="text-white font-bold"></span></p>
-                    <div class="bg-white/5 p-4 rounded-lg mb-6 border border-cactus/30">
+                    <p class="text-sm cactus-gray mb-2">Abonar a: <span id="pago-barbero-nombre" class="text-white font-bold"></span></p>
+                    <div class="bg-white/5 p-4 rounded-lg mb-6 border border-white/10">
                         <p class="text-[10px] uppercase cactus-gray">Alias de cuenta:</p>
                         <p id="pago-alias" class="text-lg font-mono text-accent-gold mt-1"></p>
                     </div>
-                    <button onclick="confirmarReserva('Transferencia')" class="w-full py-3 bg-cactus text-gray-900 font-bold rounded-lg mb-2">Confirmar Pago</button>
+                    <button onclick="confirmarReserva('Transferencia')" class="w-full py-3 bg-accent-gold text-black font-bold rounded-lg mb-2">Confirmar Reserva</button>
                     <button onclick="cerrarModal()" class="w-full py-3 text-sm opacity-50">Cancelar</button>
                 </div>
             </div>
 
             <section id="view-interno" class="hidden space-y-6">
-                <div id="admin-stats" class="grid grid-cols-1 md:grid-cols-3 gap-4 hidden">
+                
+                <div id="admin-stats" class="grid grid-cols-1 md:grid-cols-2 gap-4 hidden">
                     <div class="glass-card p-6 border-l-4 border-green-500">
-                        <p class="text-[10px] uppercase cactus-gray">Caja Estimada</p>
+                        <p class="text-[10px] uppercase cactus-gray">Caja Turnos (Estimado General)</p>
                         <h4 id="stat-caja" class="text-2xl font-bold">$0</h4>
                     </div>
-                    <div onclick="verTab('config')" class="glass-card p-6 border-l-4 border-accent-gold cursor-pointer hover:bg-white/5">
-                        <p class="text-[10px] uppercase cactus-gray">Panel de Control</p>
-                        <h4 class="text-xl font-bold">Ajustes & Personal</h4>
-                    </div>
                     <div class="glass-card p-6 border-l-4 border-red-500">
-                        <p class="text-[10px] uppercase cactus-gray">Insumos</p>
-                        <h4 id="stat-insumos" class="text-2xl font-bold">$0</h4>
+                        <p class="text-[10px] uppercase cactus-gray">Gastos Totales (Fijos y Diarios)</p>
+                        <h4 id="stat-gastos" class="text-2xl font-bold">$0</h4>
                     </div>
                 </div>
 
-                <div class="flex gap-2 overflow-x-auto pb-2" id="admin-tabs"></div>
+                <div class="flex flex-wrap gap-2 mb-4" id="admin-menu">
+                    <button onclick="verTab('agenda')" class="px-4 py-2 glass-card bg-white/10 text-sm hover:bg-white/20">📅 Mi Agenda</button>
+                    <button id="btn-tab-finanzas" onclick="verTab('finanzas')" class="px-4 py-2 glass-card border-accent-gold text-accent-gold text-sm hover:bg-white/5">💰 Finanzas y Gastos</button>
+                    <button id="btn-tab-config" onclick="verTab('config')" class="px-4 py-2 glass-card border-white/20 text-sm hover:bg-white/5 hidden">⚙️ Admin Equipo</button>
+                </div>
 
                 <div id="tab-agenda" class="glass-card p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold">Agenda: <span id="agenda-nombre" class="accent-gold"></span></h3>
-                        <button onclick="cargarGasto()" class="text-xs bg-red-900/30 text-red-400 border border-red-500/20 px-3 py-2 rounded-lg">+ Gasto</button>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                        <div>
+                            <h3 class="text-xl font-bold">Agenda: <span id="agenda-nombre" class="accent-gold"></span></h3>
+                            <input type="date" id="a-fecha" onchange="renderAgenda()" class="mt-2 text-sm max-w-[200px]">
+                        </div>
+                        <button onclick="enviarReporteWhatsApp()" class="bg-green-600/20 text-green-400 border border-green-500/30 px-4 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-green-600/40">
+                            <span>📱</span> Enviar Reporte de Hoy
+                        </button>
                     </div>
+                    
                     <div class="overflow-x-auto">
                         <table class="w-full text-left">
                             <thead class="text-[10px] uppercase cactus-gray border-b border-white/10">
                                 <tr>
                                     <th class="p-3">Hora</th>
                                     <th class="p-3">Cliente</th>
+                                    <th class="p-3">Servicios</th>
                                     <th class="p-3">Pago</th>
                                     <th class="p-3">Acción</th>
                                 </tr>
@@ -123,14 +153,31 @@
                     </div>
                 </div>
 
-                <div id="tab-config" class="glass-card p-6 hidden">
+                <div id="tab-finanzas" class="glass-card p-6 hidden">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold">Ajustes del Sistema</h3>
-                        <button onclick="verTab('agenda')" class="text-xs opacity-50 underline">Volver a Agenda</button>
+                        <h3 class="text-xl font-bold">Control de Gastos</h3>
+                        <button onclick="cargarGasto()" class="text-xs bg-red-900/30 text-red-400 border border-red-500/20 px-3 py-2 rounded-lg">+ Cargar Gasto</button>
                     </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="text-[10px] uppercase cactus-gray border-b border-white/10">
+                                <tr>
+                                    <th class="p-3">Fecha</th>
+                                    <th class="p-3">Tipo</th>
+                                    <th class="p-3">Detalle</th>
+                                    <th class="p-3">Monto</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gastos-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-config" class="glass-card p-6 hidden">
+                    <h3 class="text-xl font-bold mb-6">Ajustes del Sistema</h3>
                     
                     <div class="mb-8 p-4 bg-white/5 rounded-xl border border-accent-gold/20">
-                        <p class="text-xs font-bold text-accent-gold mb-3 uppercase">Seguridad Administrador</p>
+                        <p class="text-xs font-bold text-accent-gold mb-3 uppercase">PIN del Dueño (Admin)</p>
                         <div class="flex gap-2">
                             <input type="text" id="cfg-admin-pin" placeholder="Nuevo PIN Admin" class="flex-grow text-sm">
                             <button onclick="cambiarPinAdmin()" class="bg-white/10 px-4 rounded-lg text-xs hover:bg-white/20">Actualizar</button>
@@ -140,139 +187,124 @@
                     <p class="text-xs font-bold text-cactus-gray mb-3 uppercase">Equipo de Barberos</p>
                     <div id="config-list" class="space-y-4 mb-6"></div>
                     
-                    <button onclick="agregarBarbero()" class="w-full py-4 border-2 border-dashed border-white/20 rounded-xl text-sm cactus-gray hover:border-cactus hover:text-white transition">
+                    <button onclick="agregarBarbero()" class="w-full py-4 border-2 border-dashed border-white/20 rounded-xl text-sm cactus-gray hover:border-white hover:text-white transition">
                         + Agregar Nuevo Barbero
                     </button>
-
-                    <button onclick="guardarConfiguracion()" class="mt-8 w-full py-4 bg-white text-black font-bold rounded-xl shadow-lg">Guardar Todo y Sincronizar</button>
+                    <button onclick="guardarConfiguracion()" class="mt-8 w-full py-4 bg-accent-gold text-black font-bold rounded-xl shadow-lg">Guardar Todo</button>
                 </div>
             </section>
         </main>
     </div>
 
     <footer class="text-center p-8 mt-auto">
-        <button onclick="pedirAcceso()" class="opacity-10 hover:opacity-100 transition text-2xl">🔒</button>
+        <button onclick="pedirAcceso()" class="opacity-10 hover:opacity-100 transition text-2xl" title="Acceso Personal">🔒</button>
     </footer>
 
     <script>
-        const HORARIOS_BASE = ["09:00","09:30","10:00","10:30","11:00","11:30","15:00","15:30","16:00","16:30","17:00","17:30"];
+        const HORARIOS_BASE = ["09:00","09:30","10:00","10:30","11:00","11:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30"];
         
-        // Base de datos inicial
-        let db = JSON.parse(localStorage.getItem('barber_db')) || {
-            barberos: [
-                { id: Date.now(), nombre: "Franco", alias: "franco.mp", pin: "1111", turnos: {} }
-            ],
-            insumos: [],
-            admin_pin: "admin"
-        };
+        // Estructura de base de datos mejorada
+        let db = JSON.parse(localStorage.getItem('barber_pro_db'));
+        if(!db || !db.gastos) {
+            db = {
+                barberos: [
+                    { id: 1, nombre: "Franco", foto: "https://ui-avatars.com/api/?name=Franco&background=random", alias: "franco.mp", pin: "1111", turnos: {} }
+                ],
+                gastos: [], // {fecha, tipo, detalle, monto}
+                admin_pin: "admin"
+            };
+            localStorage.setItem('barber_pro_db', JSON.stringify(db));
+        }
 
-        let barberoActivoID = db.barberos[0]?.id;
+        // Variables de estado
+        let clienteNombre = "";
+        let barberoActivoID = null;
         let horaSeleccionada = null;
+        let serviciosSeleccionados = [];
         let esModoAdmin = false;
 
         function save() {
-            localStorage.setItem('barber_db', JSON.stringify(db));
+            localStorage.setItem('barber_pro_db', JSON.stringify(db));
         }
 
-        // --- FUNCIONES DE ADMINISTRACIÓN ---
-        function agregarBarbero() {
-            const nuevo = {
-                id: Date.now(),
-                nombre: "Nuevo Barbero",
-                alias: "alias.mp",
-                pin: "0000",
-                turnos: {}
-            };
-            db.barberos.push(nuevo);
-            renderConfig();
+        // --- 1. FLUJO DE BIENVENIDA Y CLIENTE ---
+        function entrarApp() {
+            const nombre = document.getElementById('w-nombre').value.trim();
+            if(!nombre) return alert("Por favor ingresa tu nombre.");
+            clienteNombre = nombre;
+            document.getElementById('view-welcome').classList.add('hidden');
+            document.getElementById('view-cliente').classList.remove('hidden');
+            document.getElementById('saludo-cliente').innerText = `Hola, ${clienteNombre}`;
+            
+            // Configurar fecha de hoy por defecto
+            const hoy = new Date().toISOString().split('T')[0];
+            document.getElementById('c-fecha').value = hoy;
+            document.getElementById('c-fecha').min = hoy;
+            
+            renderListaBarberos();
         }
 
-        function eliminarBarbero(id) {
-            if(db.barberos.length === 1) return alert("Debe haber al menos un barbero.");
-            if(confirm("¿Seguro que quieres eliminar a este barbero? Perderás su agenda.")) {
-                db.barberos = db.barberos.filter(b => b.id !== id);
-                if(barberoActivoID === id) barberoActivoID = db.barberos[0].id;
-                renderConfig();
+        function renderListaBarberos() {
+            const container = document.getElementById('c-lista-barberos');
+            container.innerHTML = db.barberos.map(b => `
+                <div onclick="seleccionarBarbero(${b.id}, this)" class="barbero-card cursor-pointer flex items-center gap-2 border border-white/20 p-2 rounded-xl min-w-max hover:bg-white/5 transition">
+                    <img src="${b.foto}" class="w-8 h-8 rounded-full object-cover">
+                    <span class="text-sm pr-2">${b.nombre}</span>
+                </div>
+            `).join('');
+            
+            // Seleccionar el primero por defecto
+            if(db.barberos.length > 0) {
+                seleccionarBarbero(db.barberos[0].id, container.firstElementChild);
             }
         }
 
-        function cambiarPinAdmin() {
-            const nuevoPin = document.getElementById('cfg-admin-pin').value;
-            if(nuevoPin.length < 4) return alert("PIN muy corto.");
-            db.admin_pin = nuevoPin;
-            alert("PIN de administrador actualizado. No lo olvides.");
-        }
-
-        // --- RENDERIZADO CONFIG ---
-        function renderConfig() {
-            const container = document.getElementById('config-list');
-            document.getElementById('cfg-admin-pin').value = db.admin_pin;
-            
-            container.innerHTML = db.barberos.map((b) => `
-                <div class="p-4 glass-card border border-white/10 space-y-3 relative">
-                    <button onclick="eliminarBarbero(${b.id})" class="absolute top-4 right-4 text-red-500 opacity-50 hover:opacity-100 font-bold text-xl">✕</button>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[9px] cactus-gray">NOMBRE</label>
-                            <input type="text" onchange="updateB(${b.id}, 'nombre', this.value)" value="${b.nombre}" class="text-sm">
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[9px] cactus-gray">ALIAS MERCADO PAGO</label>
-                            <input type="text" onchange="updateB(${b.id}, 'alias', this.value)" value="${b.alias}" class="text-sm">
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[9px] cactus-gray">PIN ACCESO (4 DÍGITOS)</label>
-                            <input type="text" onchange="updateB(${b.id}, 'pin', this.value)" value="${b.pin}" class="text-sm">
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function updateB(id, campo, valor) {
-            const b = db.barberos.find(x => x.id === id);
-            if(b) b[campo] = valor;
-        }
-
-        function guardarConfiguracion() {
-            save();
-            alert("Sincronizando datos...");
-            location.reload();
-        }
-
-        // --- LÓGICA DE TURNOS (SIMILAR A ANTERIOR) ---
-        function inicializarApp() {
-            const select = document.getElementById('c-barbero');
-            select.innerHTML = db.barberos.map(b => `<option value="${b.id}">${b.nombre}</option>`).join('');
-            if(!barberoActivoID && db.barberos.length > 0) barberoActivoID = db.barberos[0].id;
+        function seleccionarBarbero(id, elemento) {
+            barberoActivoID = id;
+            document.querySelectorAll('.barbero-card').forEach(el => el.classList.remove('active'));
+            elemento.classList.add('active');
             renderSlotsCliente();
         }
 
-        function cambiarBarberoCliente() {
-            barberoActivoID = parseInt(document.getElementById('c-barbero').value);
-            renderSlotsCliente();
+        function toggleServicio(servicio, btn) {
+            const index = serviciosSeleccionados.indexOf(servicio);
+            if (index > -1) {
+                serviciosSeleccionados.splice(index, 1);
+                btn.classList.remove('active');
+            } else {
+                serviciosSeleccionados.push(servicio);
+                btn.classList.add('active');
+            }
         }
 
         function renderSlotsCliente() {
+            const fecha = document.getElementById('c-fecha').value;
             const container = document.getElementById('c-slots');
             const barbero = db.barberos.find(b => b.id === barberoActivoID);
-            if(!barbero) return;
+            
+            if(!barbero || !fecha) return;
+            
+            // Inicializar objeto de fecha si no existe
+            if(!barbero.turnos[fecha]) barbero.turnos[fecha] = {};
+
             container.innerHTML = HORARIOS_BASE.map(h => {
-                const ocupado = barbero.turnos[h];
+                const ocupado = barbero.turnos[fecha][h];
                 if (ocupado) return `<div class="p-3 text-[10px] bg-white/5 border border-white/5 rounded-lg opacity-20 text-center">${h}<br>Ocupado</div>`;
-                return `<button onclick="seleccionarHora('${h}', this)" class="p-3 text-sm bg-white/5 border border-white/10 rounded-lg hover:border-cactus transition">${h}</button>`;
+                return `<button onclick="seleccionarHora('${h}', this)" class="p-3 text-sm bg-white/5 border border-white/10 rounded-lg hover:border-accent-gold transition">${h}</button>`;
             }).join('');
+            horaSeleccionada = null; // resetear
         }
 
         function seleccionarHora(h, btn) {
             horaSeleccionada = h;
-            document.querySelectorAll('#c-slots button').forEach(b => b.classList.remove('bg-cactus', 'text-black', 'border-cactus'));
-            btn.classList.add('bg-cactus', 'text-black', 'border-cactus');
+            document.querySelectorAll('#c-slots button').forEach(b => b.classList.remove('bg-accent-gold', 'text-black', 'border-accent-gold'));
+            btn.classList.add('bg-accent-gold', 'text-black', 'border-accent-gold');
         }
 
         function abrirPago() {
-            const nombre = document.getElementById('c-nombre').value;
-            if (!nombre || !horaSeleccionada) return alert("Completa tu nombre y elige un horario.");
+            if (!horaSeleccionada) return alert("Por favor elige un horario.");
+            if (serviciosSeleccionados.length === 0) return alert("Elige al menos un servicio.");
+            
             const barbero = db.barberos.find(b => b.id === barberoActivoID);
             document.getElementById('pago-barbero-nombre').innerText = barbero.nombre;
             document.getElementById('pago-alias').innerText = barbero.alias;
@@ -282,19 +314,28 @@
         function cerrarModal() { document.getElementById('modal-pago').classList.add('hidden'); }
 
         function confirmarReserva(metodo) {
-            const nombre = document.getElementById('c-nombre').value;
+            if (!horaSeleccionada || serviciosSeleccionados.length === 0) return alert("Faltan datos (Horario o Servicio).");
+            const fecha = document.getElementById('c-fecha').value;
             const barbero = db.barberos.find(b => b.id === barberoActivoID);
-            barbero.turnos[horaSeleccionada] = { cliente: nombre, pago: metodo };
+            
+            barbero.turnos[fecha][horaSeleccionada] = { 
+                cliente: clienteNombre, 
+                pago: metodo,
+                servicios: serviciosSeleccionados.join(', ')
+            };
             save();
-            alert(`¡Turno reservado para las ${horaSeleccionada}!`);
+            alert(`¡Listo! Turno confirmado el ${fecha} a las ${horaSeleccionada}.`);
             location.reload();
         }
 
+        // --- 2. FLUJO INTERNO (ADMIN / BARBERO) ---
         function pedirAcceso() {
             const pass = prompt("PIN de Acceso:");
             if (!pass) return;
+            
             if (pass === db.admin_pin) {
                 esModoAdmin = true;
+                if(db.barberos.length > 0) barberoActivoID = db.barberos[0].id;
                 mostrarInterno(true);
             } else {
                 const b = db.barberos.find(x => x.pin === pass);
@@ -309,96 +350,217 @@
         }
 
         function mostrarInterno(esAdmin) {
+            document.getElementById('view-welcome').classList.add('hidden');
             document.getElementById('view-cliente').classList.add('hidden');
             document.getElementById('view-interno').classList.remove('hidden');
             document.getElementById('btn-logout').classList.remove('hidden');
+            
+            // UI Admin vs Barbero
             document.getElementById('admin-stats').classList.toggle('hidden', !esAdmin);
-            renderTabsAdmin();
+            document.getElementById('btn-tab-config').classList.toggle('hidden', !esAdmin);
+            
+            // Configurar fecha agenda
+            document.getElementById('a-fecha').value = new Date().toISOString().split('T')[0];
+            
             verTab('agenda');
+            actualizarFinanzas();
         }
 
         function verTab(tab) {
             document.getElementById('tab-agenda').classList.toggle('hidden', tab !== 'agenda');
+            document.getElementById('tab-finanzas').classList.toggle('hidden', tab !== 'finanzas');
             document.getElementById('tab-config').classList.toggle('hidden', tab !== 'config');
+            
             if(tab === 'agenda') renderAgenda();
+            if(tab === 'finanzas') renderGastos();
             if(tab === 'config') renderConfig();
         }
 
-        function renderTabsAdmin() {
-            const container = document.getElementById('admin-tabs');
-            container.innerHTML = db.barberos.map(b => `
-                <button onclick="cambiarAgendaBarbero(${b.id})" class="px-6 py-2 glass-card border-cactus ${barberoActivoID === b.id ? 'bg-cactus text-black' : 'opacity-50'} text-xs">
-                    ${b.nombre}
-                </button>
-            `).join('');
-        }
-
-        function cambiarAgendaBarbero(id) {
-            barberoActivoID = id;
-            renderTabsAdmin();
-            renderAgenda();
-        }
-
         function renderAgenda() {
+            const fecha = document.getElementById('a-fecha').value;
             const b = db.barberos.find(x => x.id === barberoActivoID);
-            if(!b) return;
+            if(!b || !fecha) return;
+            
             document.getElementById('agenda-nombre').innerText = b.nombre;
             const tbody = document.getElementById('agenda-body');
+            
+            const turnosDia = b.turnos[fecha] || {};
+            
             tbody.innerHTML = HORARIOS_BASE.map(h => {
-                const t = b.turnos[h];
+                const t = turnosDia[h];
                 return `
                     <tr class="border-b border-white/5 hover:bg-white/5">
                         <td class="p-3 font-bold text-xs">${h}</td>
-                        <td class="p-3 text-sm">${t ? t.cliente : '<span class="opacity-20 italic text-xs">Libre</span>'}</td>
+                        <td class="p-3 text-sm font-semibold">${t ? t.cliente : '<span class="opacity-20 italic text-xs">Libre</span>'}</td>
+                        <td class="p-3 text-[10px] cactus-gray">${t ? t.servicios : '-'}</td>
                         <td class="p-3">
                             ${t ? `<span class="px-2 py-1 rounded text-[9px] ${t.pago === 'Transferencia' ? 'bg-blue-500/20 text-blue-400' : 'bg-green-500/20 text-green-400'}">${t.pago}</span>` : '-'}
                         </td>
                         <td class="p-3">
-                            ${t ? `<button onclick="borrarTurno('${h}')" class="text-red-400 text-xs">✕</button>` : `<button onclick="anotarLocal('${h}')" class="text-[10px] border border-white/20 px-2 py-1 rounded">+ Anotar</button>`}
+                            ${t ? `<button onclick="borrarTurno('${fecha}', '${h}')" class="text-red-400 text-xs hover:text-red-300">Cancelar</button>` 
+                                : `<button onclick="anotarLocal('${fecha}', '${h}')" class="text-[10px] border border-white/20 px-2 py-1 rounded hover:bg-white/10">+ Anotar</button>`}
                         </td>
                     </tr>
                 `;
             }).join('');
+        }
+
+        function anotarLocal(fecha, h) {
+            const n = prompt("Nombre del cliente (Local):");
+            if(!n) return;
+            const s = prompt("Servicios (Ej: Corte, Barba):", "Corte");
+            const b = db.barberos.find(x => x.id === barberoActivoID);
+            if(!b.turnos[fecha]) b.turnos[fecha] = {};
+            
+            b.turnos[fecha][h] = { cliente: n, pago: "Efectivo", servicios: s || "Corte" };
+            save();
+            renderAgenda();
             actualizarFinanzas();
         }
 
-        function anotarLocal(h) {
-            const n = prompt("Nombre del cliente:");
-            if(!n) return;
-            db.barberos.find(b => b.id === barberoActivoID).turnos[h] = { cliente: n, pago: "Efectivo" };
-            save();
-            renderAgenda();
-        }
-
-        function borrarTurno(h) {
-            if(confirm("¿Borrar turno?")) {
-                delete db.barberos.find(b => b.id === barberoActivoID).turnos[h];
+        function borrarTurno(fecha, h) {
+            if(confirm("¿Seguro que quieres borrar este turno?")) {
+                delete db.barberos.find(b => b.id === barberoActivoID).turnos[fecha][h];
                 save();
                 renderAgenda();
-            }
-        }
-
-        function cargarGasto() {
-            const n = prompt("Nombre del insumo:");
-            const v = prompt("Precio:");
-            if(n && v) {
-                db.insumos.push({ nombre: n, valor: parseFloat(v) });
-                save();
                 actualizarFinanzas();
             }
         }
 
+        // --- 3. FINANZAS Y GASTOS ---
+        function cargarGasto() {
+            const tipo = prompt("Tipo de gasto (Fijo o Diario):", "Diario");
+            if(!tipo) return;
+            const detalle = prompt("Detalle (Ej: Luz, Insumos):");
+            const monto = prompt("Monto:");
+            if(detalle && monto) {
+                const hoy = new Date().toISOString().split('T')[0];
+                db.gastos.push({ fecha: hoy, tipo: tipo, detalle: detalle, monto: parseFloat(monto) });
+                save();
+                renderGastos();
+                actualizarFinanzas();
+            }
+        }
+
+        function renderGastos() {
+            const tbody = document.getElementById('gastos-body');
+            // Mostrar últimos gastos arriba
+            const gastosInvertidos = [...db.gastos].reverse();
+            tbody.innerHTML = gastosInvertidos.map(g => `
+                <tr class="border-b border-white/5">
+                    <td class="p-3 text-[10px] cactus-gray">${g.fecha}</td>
+                    <td class="p-3 text-xs"><span class="px-2 py-1 rounded bg-red-500/20 text-red-400">${g.tipo}</span></td>
+                    <td class="p-3 text-sm">${g.detalle}</td>
+                    <td class="p-3 font-bold text-red-400">-$${g.monto.toLocaleString()}</td>
+                </tr>
+            `).join('');
+        }
+
         function actualizarFinanzas() {
+            // Un cálculo estimado muy simple: contamos turnos por $10,000 para ejemplo.
+            // En un sistema real, cada servicio tendría un precio.
             let totalCaja = 0;
-            db.barberos.forEach(b => { totalCaja += Object.keys(b.turnos).length * 10000; });
-            let totalInsumos = db.insumos.reduce((acc, i) => acc + i.valor, 0);
+            db.barberos.forEach(b => {
+                Object.values(b.turnos).forEach(dia => {
+                    totalCaja += Object.keys(dia).length * 10000;
+                });
+            });
+            let totalGastos = db.gastos.reduce((acc, g) => acc + g.monto, 0);
+            
             document.getElementById('stat-caja').innerText = `$${totalCaja.toLocaleString()}`;
-            document.getElementById('stat-insumos').innerText = `$${totalInsumos.toLocaleString()}`;
+            document.getElementById('stat-gastos').innerText = `-$${totalGastos.toLocaleString()}`;
+        }
+
+        // --- 4. WHATSAPP REPORT ---
+        function enviarReporteWhatsApp() {
+            const fecha = document.getElementById('a-fecha').value;
+            const b = db.barberos.find(x => x.id === barberoActivoID);
+            const turnosDia = b.turnos[fecha] || {};
+            let cantidadTurnos = Object.keys(turnosDia).length;
+            
+            let texto = `*Reporte Diario - ${b.nombre}*\nFecha: ${fecha}\n\n*Turnos Atendidos: ${cantidadTurnos}*\n`;
+            
+            for (const [hora, datos] of Object.entries(turnosDia)) {
+                texto += `• ${hora} - ${datos.cliente} (${datos.servicios}) - [${datos.pago}]\n`;
+            }
+            
+            texto += `\n_Enviado desde Barber Pro Elite_`;
+            
+            const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+            window.open(url, '_blank');
+        }
+
+        // --- 5. ADMINISTRACIÓN DE EQUIPO ---
+        function agregarBarbero() {
+            const nuevo = {
+                id: Date.now(),
+                nombre: "Nuevo Barbero",
+                foto: "https://ui-avatars.com/api/?name=Nuevo&background=random",
+                alias: "alias.mp",
+                pin: "0000",
+                turnos: {}
+            };
+            db.barberos.push(nuevo);
+            renderConfig();
+        }
+
+        function renderConfig() {
+            const container = document.getElementById('config-list');
+            document.getElementById('cfg-admin-pin').value = db.admin_pin;
+            
+            container.innerHTML = db.barberos.map((b) => `
+                <div class="p-4 glass-card border border-white/10 space-y-3 relative">
+                    <button onclick="eliminarBarbero(${b.id})" class="absolute top-4 right-4 text-red-500 opacity-50 hover:opacity-100 font-bold text-xl">✕</button>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] cactus-gray">NOMBRE</label>
+                            <input type="text" onchange="updateB(${b.id}, 'nombre', this.value)" value="${b.nombre}" class="text-sm">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] cactus-gray">FOTO URL</label>
+                            <input type="text" onchange="updateB(${b.id}, 'foto', this.value)" value="${b.foto}" class="text-sm">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] cactus-gray">ALIAS MP</label>
+                            <input type="text" onchange="updateB(${b.id}, 'alias', this.value)" value="${b.alias}" class="text-sm">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] cactus-gray">PIN ACCESO</label>
+                            <input type="text" onchange="updateB(${b.id}, 'pin', this.value)" value="${b.pin}" class="text-sm">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateB(id, campo, valor) {
+            const b = db.barberos.find(x => x.id === id);
+            if(b) b[campo] = valor;
+        }
+
+        function cambiarPinAdmin() {
+            const nuevoPin = document.getElementById('cfg-admin-pin').value;
+            if(nuevoPin.length < 4) return alert("El PIN debe tener al menos 4 caracteres.");
+            db.admin_pin = nuevoPin;
+            alert("PIN del Dueño actualizado.");
+        }
+
+        function eliminarBarbero(id) {
+            if(db.barberos.length === 1) return alert("Debe haber al menos un barbero.");
+            if(confirm("¿Seguro que quieres eliminar a este barbero?")) {
+                db.barberos = db.barberos.filter(b => b.id !== id);
+                renderConfig();
+            }
+        }
+
+        function guardarConfiguracion() {
+            save();
+            alert("Configuración guardada correctamente.");
+            location.reload();
         }
 
         function cerrarSesion() { location.reload(); }
 
-        inicializarApp();
     </script>
 </body>
 </html>
