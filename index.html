@@ -3,83 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Barber Pro Elite</title>
-
+<title>Barber Pro Elite - Enterprise</title>
 <script src="https://cdn.tailwindcss.com"></script>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-body{
-    font-family:'Inter',sans-serif;
-    background:linear-gradient(135deg,#0f172a 0%,#111827 50%,#1f2937 100%);
-    color:white;
-    min-height:100vh;
+body {
+    font-family: 'Inter', sans-serif;
+    /* Paleta oscura empresarial y limpia */
+    background: linear-gradient(135deg, #0f172a 0%, #111827 50%, #1f2937 100%);
+    color: white;
+    min-height: 100vh;
 }
 
-.glass{
-    background:rgba(255,255,255,0.05);
-    backdrop-filter:blur(14px);
-    border:1px solid rgba(255,255,255,0.08);
-    border-radius:24px;
+/* Efecto Glassmorphism refinado */
+.glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
-.gold{
-    color:#D4AF37;
+.gold { color: #D4AF37; }
+.bg-gold { background: #D4AF37; }
+
+input, select, textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: white;
+    outline: none;
+    transition: 0.3s;
 }
 
-.bg-gold{
-    background:#D4AF37;
+input:focus, textarea:focus {
+    border-color: #D4AF37;
+    background: rgba(255, 255, 255, 0.08);
 }
 
-input,select,textarea{
-    width:100%;
-    padding:14px;
-    border-radius:14px;
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.1);
-    color:white;
-    outline:none;
+button { transition: 0.2s ease-in-out; }
+
+.tab-btn { color: rgba(255,255,255,0.6); }
+.tab-btn.active {
+    background: #D4AF37;
+    color: black;
+    font-weight: 600;
+    border-color: #D4AF37;
 }
 
-button{
-    transition:0.2s;
+.slot.active {
+    background: #D4AF37;
+    color: black;
+    border-color: #D4AF37;
 }
 
-.tab-btn.active{
-    background:#D4AF37;
-    color:black;
+.barbero { transition: 0.3s; cursor: pointer; }
+.barbero.active {
+    border-color: #D4AF37;
+    background: rgba(212, 175, 55, 0.08);
+    transform: translateY(-4px);
 }
 
-.slot.active{
-    background:#D4AF37;
-    color:black;
-    border-color:#D4AF37;
+.fade { animation: fade .4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+@keyframes fade {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.barbero.active{
-    border-color:#D4AF37;
-    background:rgba(212,175,55,0.1);
-    transform:scale(1.03);
-}
-
-.fade{
-    animation:fade .3s ease;
-}
-
-@keyframes fade{
-    from{
-        opacity:0;
-        transform:translateY(10px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
+/* Scrollbar estilizado para la tabla */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
 </style>
 </head>
 
@@ -88,466 +87,233 @@ button{
 <div class="max-w-7xl mx-auto">
 
 <header class="flex justify-between items-center mb-8">
-
-<div>
-<h1 class="text-3xl font-light uppercase tracking-widest">
-Barber <span class="font-bold gold">Elite</span>
-</h1>
-
-<p class="text-xs opacity-60 uppercase tracking-widest">
-Sistema Profesional Barbería
-</p>
-</div>
-
-<button
-id="btnLogout"
-onclick="logout()"
-class="hidden px-4 py-2 rounded-xl border border-red-500/40 text-red-400">
-Salir
-</button>
-
+    <div>
+        <h1 class="text-3xl font-light uppercase tracking-widest">
+            Barber <span class="font-bold gold">Elite</span>
+        </h1>
+        <p class="text-xs opacity-60 uppercase tracking-widest mt-1">
+            Sistema Profesional Barbería
+        </p>
+    </div>
+    <button id="btnLogout" onclick="logout()" class="hidden px-5 py-2.5 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10">
+        Salir del Sistema
+    </button>
 </header>
 
-<!-- ================================================= -->
-<!-- PANTALLA INICIO CLIENTE -->
-<!-- ================================================= -->
-
 <section id="pantallaInicio" class="fade">
-
-<div class="glass p-8 md:p-10 max-w-md mx-auto text-center">
-
-<img
-src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=400&auto=format&fit=crop"
-class="w-32 h-32 rounded-full mx-auto object-cover border-4 border-yellow-500 shadow-2xl mb-6">
-
-<h2 class="text-3xl font-bold mb-2">
-Barber Elite
-</h2>
-
-<p class="opacity-60 mb-8">
-Reservá tu turno online
-</p>
-
-<input
-type="text"
-id="clienteNombreInicio"
-placeholder="Nombre y apellido">
-
-<button
-onclick="entrarCliente()"
-class="w-full mt-5 py-4 rounded-2xl bg-gold text-black font-bold text-lg">
-ENTRAR
-</button>
-
-</div>
-
+    <div class="glass p-8 md:p-12 max-w-md mx-auto text-center">
+        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=400&auto=format&fit=crop" class="w-32 h-32 rounded-full mx-auto object-cover border-4 border-[#D4AF37] shadow-2xl mb-8">
+        <h2 class="text-3xl font-bold mb-2">Reserva tu Turno</h2>
+        <p class="opacity-60 mb-8 text-sm">Ingresa tus datos para continuar</p>
+        
+        <input type="text" id="clienteNombreInicio" placeholder="Nombre y apellido" class="mb-5 text-center text-lg">
+        <button onclick="entrarCliente()" class="w-full py-4 rounded-xl bg-gold text-black font-bold text-lg hover:brightness-110 shadow-lg shadow-yellow-500/20">
+            ENTRAR
+        </button>
+    </div>
 </section>
-
-<!-- ================================================= -->
-<!-- PANTALLA CLIENTE -->
-<!-- ================================================= -->
 
 <section id="pantallaCliente" class="hidden fade">
+    <div class="glass p-6 md:p-10 max-w-5xl mx-auto">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-10 border-b border-white/10 pb-8">
+            <div>
+                <h2 class="text-4xl font-light">Hola, <span id="nombreClienteTxt" class="font-bold gold"></span></h2>
+                <p class="opacity-60 mt-2">Configura tu cita a continuación</p>
+            </div>
+            <div class="max-w-[240px] w-full">
+                <label class="text-xs uppercase opacity-60 mb-2 block font-semibold tracking-wider">Fecha del Turno</label>
+                <input type="date" id="fechaTurno" onchange="renderHorarios()">
+            </div>
+        </div>
 
-<div class="glass p-6 md:p-8 max-w-5xl mx-auto">
+        <div class="mb-10">
+            <label class="text-xs opacity-60 uppercase block mb-4 font-semibold tracking-wider">1. Seleccionar Profesional</label>
+            <div id="listaBarberos" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+        </div>
 
-<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
+        <div class="mb-10">
+            <label class="text-xs opacity-60 uppercase block mb-4 font-semibold tracking-wider">2. Seleccionar Servicios</label>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="toggleServicio('Corte',this)" class="servicio px-6 py-3.5 rounded-xl border border-white/10 hover:bg-white/5 transition-colors">Corte</button>
+                <button onclick="toggleServicio('Barba',this)" class="servicio px-6 py-3.5 rounded-xl border border-white/10 hover:bg-white/5 transition-colors">Barba</button>
+                <button onclick="toggleServicio('Cejas',this)" class="servicio px-6 py-3.5 rounded-xl border border-white/10 hover:bg-white/5 transition-colors">Cejas</button>
+                <button onclick="toggleServicio('Color',this)" class="servicio px-6 py-3.5 rounded-xl border border-white/10 hover:bg-white/5 transition-colors">Color</button>
+            </div>
+        </div>
 
-<div>
-<h2 class="text-3xl font-bold">
-Hola <span id="nombreClienteTxt" class="gold"></span>
-</h2>
+        <div class="mb-10">
+            <label class="text-xs opacity-60 uppercase block mb-4 font-semibold tracking-wider">3. Horarios Disponibles</label>
+            <div id="horarios" class="grid grid-cols-3 md:grid-cols-5 gap-3"></div>
+        </div>
 
-<p class="opacity-60 mt-1">
-Elegí tu barbero y reservá tu horario
-</p>
-</div>
-
-<div class="max-w-[240px] w-full">
-
-<label class="text-xs uppercase opacity-60 mb-2 block">
-Elegir otro día
-</label>
-
-<input
-type="date"
-id="fechaTurno"
-onchange="renderHorarios()">
-
-</div>
-
-</div>
-
-<!-- BARBEROS -->
-
-<div class="mb-8">
-
-<label class="text-xs opacity-60 uppercase block mb-4">
-Seleccionar Barbero
-</label>
-
-<div
-id="listaBarberos"
-class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
-
-</div>
-
-<!-- SERVICIOS -->
-
-<div class="mb-8">
-
-<label class="text-xs opacity-60 uppercase block mb-4">
-Servicios
-</label>
-
-<div class="flex flex-wrap gap-3">
-
-<button onclick="toggleServicio('Corte',this)"
-class="servicio px-5 py-3 rounded-2xl border border-white/10 hover:bg-white/10">
-Corte
-</button>
-
-<button onclick="toggleServicio('Barba',this)"
-class="servicio px-5 py-3 rounded-2xl border border-white/10 hover:bg-white/10">
-Barba
-</button>
-
-<button onclick="toggleServicio('Cejas',this)"
-class="servicio px-5 py-3 rounded-2xl border border-white/10 hover:bg-white/10">
-Cejas
-</button>
-
-<button onclick="toggleServicio('Color',this)"
-class="servicio px-5 py-3 rounded-2xl border border-white/10 hover:bg-white/10">
-Color
-</button>
-
-</div>
-
-</div>
-
-<!-- HORARIOS -->
-
-<div class="mb-8">
-
-<label class="text-xs opacity-60 uppercase block mb-4">
-Horarios Disponibles
-</label>
-
-<div
-id="horarios"
-class="grid grid-cols-3 md:grid-cols-5 gap-3"></div>
-
-</div>
-
-<!-- BOTON CONFIRMACION -->
-
-<div class="mb-6">
-
-<button
-onclick="confirmarDatos()"
-class="w-full py-5 rounded-2xl bg-gold text-black font-bold text-lg shadow-xl">
-CONFIRMAR TURNO
-</button>
-
-</div>
-
-<!-- PAGOS -->
-
-<div class="grid md:grid-cols-2 gap-3">
-
-<button
-onclick="abrirPago()"
-class="py-4 rounded-2xl bg-white text-black font-bold">
-Pagar Seña
-</button>
-
-<button
-onclick="confirmarReserva('Efectivo')"
-class="py-4 rounded-2xl border border-white/20 hover:bg-white/5">
-Pago en Local
-</button>
-
-</div>
-
-</div>
-
+        <div class="mb-8 border-t border-white/10 pt-8">
+            <button onclick="confirmarDatos()" class="w-full py-5 rounded-xl bg-gold text-black font-bold text-lg shadow-xl shadow-yellow-500/10 hover:brightness-110 mb-4">
+                CONFIRMAR Y RESERVAR
+            </button>
+            <div class="grid md:grid-cols-2 gap-4">
+                <button onclick="abrirPago()" class="py-4 rounded-xl bg-white text-black font-bold hover:bg-gray-100">Pagar Seña (Transferencia)</button>
+                <button onclick="confirmarReserva('Efectivo')" class="py-4 rounded-xl border border-white/20 hover:bg-white/5">Abonar en el Local</button>
+            </div>
+        </div>
+    </div>
 </section>
 
-<!-- LOGIN -->
-
-<div class="text-center mt-10">
-
-<button
-onclick="loginInterno()"
-class="opacity-20 hover:opacity-100 text-2xl">
-🔒
-</button>
-
+<div class="text-center mt-12 pb-8">
+    <button onclick="loginInterno()" class="opacity-20 hover:opacity-100 text-2xl transition-opacity" title="Acceso Administrativo">🔒</button>
 </div>
 
-<!-- ================================================= -->
-<!-- PANEL INTERNO -->
-<!-- ================================================= -->
-
-<section id="panelInterno" class="hidden mt-8 fade">
-
-<!-- STATS ADMIN -->
-
-<div id="statsAdmin" class="hidden grid md:grid-cols-4 gap-4 mb-6">
-
-<div class="glass p-5">
-<p class="text-xs opacity-60 uppercase">Caja Total</p>
-<h2 id="statCaja" class="text-3xl font-bold mt-2">$0</h2>
-</div>
-
-<div class="glass p-5">
-<p class="text-xs opacity-60 uppercase">Gastos</p>
-<h2 id="statGastos" class="text-3xl font-bold mt-2 text-red-400">$0</h2>
-</div>
-
-<div class="glass p-5">
-<p class="text-xs opacity-60 uppercase">Ganancia</p>
-<h2 id="statGanancia" class="text-3xl font-bold mt-2 text-green-400">$0</h2>
-</div>
-
-<div class="glass p-5">
-<p class="text-xs opacity-60 uppercase">Turnos</p>
-<h2 id="statTurnos" class="text-3xl font-bold mt-2">0</h2>
-</div>
-
-</div>
-
-<!-- MENU -->
-
-<div class="flex flex-wrap gap-2 mb-6">
-
-<button onclick="verTab('agenda')" class="tab-btn active px-4 py-3 glass">
-Agenda
-</button>
-
-<button onclick="verTab('gastos')" class="tab-btn px-4 py-3 glass adminOnly">
-Gastos
-</button>
-
-<button onclick="verTab('ganancias')" class="tab-btn px-4 py-3 glass adminOnly">
-Ganancias
-</button>
-
-<button onclick="verTab('barberos')" class="tab-btn px-4 py-3 glass adminOnly">
-Por Barbero
-</button>
-
-<button onclick="verTab('config')" class="tab-btn px-4 py-3 glass adminOnly">
-Configuración
-</button>
-
-</div>
-
-<!-- AGENDA -->
-
-<div id="tabAgenda" class="glass p-6">
-
-<div class="flex justify-between items-center mb-6 flex-wrap gap-4">
-
-<div>
-
-<h2 class="text-2xl font-bold">
-Agenda
-</h2>
-
-<input
-type="date"
-id="fechaAgenda"
-onchange="renderAgenda()"
-class="mt-3 max-w-[220px]">
-
-</div>
-
-<button
-onclick="enviarWhatsApp()"
-class="bg-green-500/20 border border-green-500/30 text-green-400 px-4 py-3 rounded-xl">
-Enviar WhatsApp
-</button>
-
-</div>
-
-<div class="overflow-x-auto">
-
-<table class="w-full">
-
-<thead class="border-b border-white/10 text-xs uppercase opacity-60">
-
-<tr>
-<th class="p-3 text-left">Hora</th>
-<th class="p-3 text-left">Cliente</th>
-<th class="p-3 text-left">Servicio</th>
-<th class="p-3 text-left">Pago</th>
-<th class="p-3 text-left">Observación</th>
-</tr>
-
-</thead>
-
-<tbody id="agendaBody"></tbody>
-
-</table>
-
-</div>
-
-</div>
-
-<!-- GASTOS -->
-
-<div id="tabGastos" class="glass p-6 hidden">
-
-<div class="flex justify-between items-center mb-6">
-
-<h2 class="text-2xl font-bold">
-Gastos
-</h2>
-
-<button
-onclick="agregarGasto()"
-class="bg-red-500/20 border border-red-500/30 text-red-400 px-4 py-2 rounded-xl">
-+ Agregar
-</button>
-
-</div>
-
-<div id="listaGastos"></div>
-
-</div>
-
-<!-- GANANCIAS -->
-
-<div id="tabGanancias" class="glass p-6 hidden">
-
-<h2 class="text-2xl font-bold mb-6">
-Ganancias del Negocio
-</h2>
-
-<div id="gananciasBox"></div>
-
-</div>
-
-<!-- BARBEROS -->
-
-<div id="tabBarberos" class="glass p-6 hidden">
-
-<h2 class="text-2xl font-bold mb-6">
-Rendimiento por Barbero
-</h2>
-
-<div id="panelBarberos"></div>
-
-</div>
-
-<!-- CONFIG -->
-
-<div id="tabConfig" class="glass p-6 hidden">
-
-<h2 class="text-2xl font-bold mb-6">
-Configuración
-</h2>
-
-<div class="mb-6">
-
-<label class="text-xs opacity-60 uppercase">
-PIN ADMIN
-</label>
-
-<input type="text" id="adminPinInput">
-
-</div>
-
-<div id="configBarberos"></div>
-
-<button
-onclick="agregarBarbero()"
-class="w-full border border-dashed border-white/20 py-4 rounded-2xl mt-6">
-+ Agregar Barbero
-</button>
-
-<button
-onclick="guardarTodo()"
-class="w-full py-4 bg-gold text-black font-bold rounded-2xl mt-4">
-Guardar Cambios
-</button>
-
-</div>
-
+<section id="panelInterno" class="hidden mt-4 fade">
+    <div class="flex flex-wrap gap-3 mb-8">
+        <button onclick="verTab('agenda')" class="tab-btn active px-6 py-3.5 glass rounded-xl text-sm uppercase tracking-wider">Agenda Diaria</button>
+        <button onclick="verTab('gastos')" class="tab-btn px-6 py-3.5 glass rounded-xl text-sm uppercase tracking-wider adminOnly">Control de Gastos</button>
+        <button onclick="verTab('ganancias')" class="tab-btn px-6 py-3.5 glass rounded-xl text-sm uppercase tracking-wider adminOnly">Ganancias</button>
+        <button onclick="verTab('barberos')" class="tab-btn px-6 py-3.5 glass rounded-xl text-sm uppercase tracking-wider adminOnly">Staff & Francos</button>
+        <button onclick="verTab('config')" class="tab-btn px-6 py-3.5 glass rounded-xl text-sm uppercase tracking-wider adminOnly">Sistema</button>
+    </div>
+
+    <div id="tabAgenda" class="glass p-8 fade">
+        <div class="flex justify-between items-end mb-8 flex-wrap gap-4">
+            <div>
+                <h2 class="text-2xl font-light mb-1">Agenda del Día</h2>
+                <input type="date" id="fechaAgenda" onchange="renderAgenda()" class="w-48 text-sm">
+            </div>
+            <button onclick="enviarWhatsApp()" class="bg-green-500/10 border border-green-500/30 text-green-400 px-5 py-3 rounded-xl hover:bg-green-500/20 font-medium">
+                Notificar por WhatsApp
+            </button>
+        </div>
+        <div class="overflow-x-auto rounded-xl border border-white/5">
+            <table class="w-full text-sm">
+                <thead class="bg-white/5 text-xs uppercase opacity-70 tracking-wider">
+                    <tr>
+                        <th class="p-4 text-left font-medium">Hora</th>
+                        <th class="p-4 text-left font-medium">Cliente</th>
+                        <th class="p-4 text-left font-medium">Servicios</th>
+                        <th class="p-4 text-left font-medium">Método</th>
+                        <th class="p-4 text-left font-medium">Notas / Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody id="agendaBody" class="divide-y divide-white/5"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="tabGastos" class="glass p-8 hidden fade">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b border-white/10 pb-6">
+            <div>
+                <h2 class="text-2xl font-light mb-1">Control de Gastos</h2>
+                <p class="text-sm opacity-60">Registra y divide los egresos operativos</p>
+            </div>
+            <div class="flex items-center gap-4 bg-white/5 p-2 pr-4 rounded-xl border border-white/10">
+                <label class="text-xs uppercase opacity-70 pl-3">Días trabajados/mes:</label>
+                <input type="number" id="inputDias" onchange="actualizarDias(this.value)" class="w-20 py-2 text-center" min="1" max="31">
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white/5 p-6 rounded-xl border border-white/10">
+                <p class="text-xs opacity-60 uppercase tracking-widest mb-1">Gasto Acumulado Total</p>
+                <h2 id="statGastosTotales" class="text-3xl font-bold text-red-400">$0</h2>
+            </div>
+            <div class="bg-white/5 p-6 rounded-xl border border-white/10">
+                <p class="text-xs opacity-60 uppercase tracking-widest mb-1">Costo Operativo Diario</p>
+                <h2 id="statGastoDiario" class="text-3xl font-bold text-orange-400">$0 <span class="text-sm font-normal opacity-60">/día</span></h2>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-medium text-lg">Historial de Movimientos</h3>
+            <button onclick="agregarGasto()" class="bg-red-500/10 border border-red-500/30 text-red-400 px-5 py-2.5 rounded-xl hover:bg-red-500/20 text-sm">
+                + Registrar Gasto
+            </button>
+        </div>
+        <div id="listaGastos" class="space-y-3"></div>
+    </div>
+
+    <div id="tabGanancias" class="glass p-8 hidden fade">
+        <h2 class="text-2xl font-light mb-2">Reporte de Ganancias</h2>
+        <p class="text-sm opacity-60 mb-8 border-b border-white/10 pb-6">Rendimiento financiero general del negocio</p>
+        <div id="gananciasBox"></div>
+    </div>
+
+    <div id="tabBarberos" class="glass p-8 hidden fade">
+        <h2 class="text-2xl font-light mb-2">Staff & Organización</h2>
+        <p class="text-sm opacity-60 mb-8 border-b border-white/10 pb-6">Visualiza rendimiento y administra los días de franco (descanso) por barbero.</p>
+        <div id="panelBarberos" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+    </div>
+
+    <div id="tabConfig" class="glass p-8 hidden fade">
+        <h2 class="text-2xl font-light mb-6 border-b border-white/10 pb-4">Parámetros del Sistema</h2>
+        
+        <div class="mb-8 max-w-sm bg-white/5 p-6 rounded-xl border border-white/10">
+            <label class="text-xs opacity-60 uppercase tracking-widest block mb-3">PIN Maestro (Administrador)</label>
+            <input type="text" id="adminPinInput" class="font-mono text-center tracking-[0.5em] text-xl">
+        </div>
+
+        <h3 class="text-lg font-medium mb-4">Cuentas de Barberos</h3>
+        <div id="configBarberos" class="space-y-4"></div>
+
+        <div class="flex gap-4 mt-8">
+            <button onclick="agregarBarbero()" class="flex-1 border border-dashed border-white/20 py-4 rounded-xl hover:bg-white/5 text-sm uppercase tracking-wide">
+                + Alta Barbero
+            </button>
+            <button onclick="guardarTodo()" class="flex-1 bg-gold text-black font-bold py-4 rounded-xl shadow-lg hover:brightness-110 uppercase tracking-wide">
+                Guardar Configuración
+            </button>
+        </div>
+    </div>
 </section>
 
-<!-- MODAL PAGO -->
-
-<div
-id="modalPago"
-class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-
-<div class="glass p-8 max-w-md w-full text-center">
-
-<h2 class="text-2xl font-bold mb-4">
-Transferencia
-</h2>
-
-<p class="mb-2 opacity-60">
-Alias:
-</p>
-
-<p id="aliasPago" class="text-2xl gold font-bold mb-6">
-alias
-</p>
-
-<button
-onclick="confirmarReserva('Transferencia')"
-class="w-full py-4 bg-gold text-black rounded-2xl font-bold">
-Confirmar Pago
-</button>
-
-<button
-onclick="cerrarModal()"
-class="w-full mt-3 py-3 border border-white/10 rounded-2xl">
-Cancelar
-</button>
-
-</div>
-
+<div id="modalPago" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 z-50 fade">
+    <div class="glass p-10 max-w-md w-full text-center border-yellow-500/30">
+        <div class="w-16 h-16 rounded-full bg-yellow-500/20 flex items-center justify-center mx-auto mb-6">
+            <span class="text-2xl">💸</span>
+        </div>
+        <h2 class="text-2xl font-light mb-2">Datos de Transferencia</h2>
+        <p class="opacity-60 text-sm mb-6">Realiza el pago al siguiente alias:</p>
+        <div class="bg-white/5 p-4 rounded-xl border border-white/10 mb-8">
+            <p id="aliasPago" class="text-2xl gold font-mono tracking-wide selection:bg-yellow-500/30"></p>
+        </div>
+        <button onclick="confirmarReserva('Transferencia')" class="w-full py-4 bg-gold text-black rounded-xl font-bold hover:brightness-110 mb-3 shadow-lg shadow-yellow-500/20">
+            Ya Transferí (Confirmar)
+        </button>
+        <button onclick="cerrarModal()" class="w-full py-4 border border-white/10 rounded-xl hover:bg-white/5">
+            Cancelar / Volver
+        </button>
+    </div>
 </div>
 
 <script>
-
 const HORARIOS = [
-"09:00","09:30","10:00","10:30","11:00","11:30",
-"15:00","15:30","16:00","16:30","17:00","17:30",
-"18:00","18:30","19:00","19:30"
+    "09:00","09:30","10:00","10:30","11:00","11:30",
+    "15:00","15:30","16:00","16:30","17:00","17:30",
+    "18:00","18:30","19:00","19:30"
 ];
 
 let db = JSON.parse(localStorage.getItem("barberElite"));
 
 if(!db){
-
-db = {
-
-admin_pin:"0602",
-
-barberos:[
-{
-id:1,
-nombre:"Franco",
-pin:"1111",
-alias:"franco.mp",
-foto:"https://ui-avatars.com/api/?name=Franco",
-turnos:{}
+    db = {
+        admin_pin: "0602",
+        dias_trabajados: 24, // Días laborables por defecto
+        barberos: [
+            {
+                id: 1,
+                nombre: "Franco",
+                pin: "1111",
+                alias: "franco.mp",
+                foto: "https://ui-avatars.com/api/?name=Franco&background=random",
+                turnos: {},
+                francos: [] // Días de descanso
+            }
+        ],
+        gastos: []
+    };
+    save();
 }
-],
 
-gastos:[]
-
-};
-
-save();
-
-}
+// Migración para bases de datos existentes
+if(!db.dias_trabajados) db.dias_trabajados = 24;
+db.barberos.forEach(b => { if(!b.francos) b.francos = []; });
 
 let clienteNombre = "";
 let barberoActivo = null;
@@ -556,696 +322,440 @@ let servicios = [];
 let admin = false;
 
 function save(){
-localStorage.setItem("barberElite",JSON.stringify(db));
+    localStorage.setItem("barberElite", JSON.stringify(db));
 }
 
 function entrarCliente(){
-
-const nombre =
-document.getElementById("clienteNombreInicio").value.trim();
-
-if(!nombre){
-return alert("Ingresá tu nombre.");
-}
-
-clienteNombre = nombre;
-
-document.getElementById("nombreClienteTxt").innerText = nombre;
-
-document.getElementById("pantallaInicio").classList.add("hidden");
-
-document.getElementById("pantallaCliente").classList.remove("hidden");
-
+    const nombre = document.getElementById("clienteNombreInicio").value.trim();
+    if(!nombre) return alert("Por favor, ingresa tu nombre completo.");
+    
+    clienteNombre = nombre;
+    document.getElementById("nombreClienteTxt").innerText = nombre;
+    document.getElementById("pantallaInicio").classList.add("hidden");
+    document.getElementById("pantallaCliente").classList.remove("hidden");
 }
 
 function renderBarberos(){
+    const lista = document.getElementById("listaBarberos");
+    lista.innerHTML = db.barberos.map(b => `
+        <button onclick="seleccionarBarbero(${b.id},this)" class="barbero glass p-5 flex flex-col items-center justify-center border border-white/5 hover:border-yellow-500/50">
+            <img src="${b.foto}" class="w-16 h-16 rounded-full object-cover mb-3 border-2 border-transparent">
+            <p class="font-medium text-sm">${b.nombre}</p>
+        </button>
+    `).join("");
 
-const lista = document.getElementById("listaBarberos");
-
-lista.innerHTML = db.barberos.map(b=>`
-
-<button
-onclick="seleccionarBarbero(${b.id},this)"
-class="barbero glass p-5 flex flex-col items-center justify-center border border-white/10 hover:border-yellow-500">
-
-<img
-src="${b.foto}"
-class="w-20 h-20 rounded-full object-cover mb-4 border-2 border-yellow-500">
-
-<p class="font-semibold text-lg">
-${b.nombre}
-</p>
-
-<p class="text-xs opacity-50 mt-1">
-Seleccionar
-</p>
-
-</button>
-
-`).join("");
-
-if(db.barberos.length>0){
-
-seleccionarBarbero(
-db.barberos[0].id,
-lista.firstElementChild
-);
-
+    if(db.barberos.length > 0){
+        seleccionarBarbero(db.barberos[0].id, lista.firstElementChild);
+    }
 }
 
+function seleccionarBarbero(id, el){
+    barberoActivo = id;
+    document.querySelectorAll(".barbero").forEach(x => {
+        x.classList.remove("active");
+        x.querySelector('img').classList.remove('border-[#D4AF37]');
+    });
+    el.classList.add("active");
+    el.querySelector('img').classList.add('border-[#D4AF37]');
+    renderHorarios();
 }
 
-function seleccionarBarbero(id,el){
-
-barberoActivo = id;
-
-document.querySelectorAll(".barbero").forEach(x=>{
-x.classList.remove("active");
-});
-
-el.classList.add("active");
-
-renderHorarios();
-
-}
-
-function toggleServicio(servicio,btn){
-
-if(servicios.includes(servicio)){
-
-servicios = servicios.filter(x=>x!==servicio);
-
-btn.classList.remove("bg-gold","text-black");
-
-}else{
-
-servicios.push(servicio);
-
-btn.classList.add("bg-gold","text-black");
-
-}
-
+function toggleServicio(servicio, btn){
+    if(servicios.includes(servicio)){
+        servicios = servicios.filter(x => x !== servicio);
+        btn.classList.remove("bg-gold","text-black","border-[#D4AF37]");
+    } else {
+        servicios.push(servicio);
+        btn.classList.add("bg-gold","text-black","border-[#D4AF37]");
+    }
 }
 
 function renderHorarios(){
+    const fecha = document.getElementById("fechaTurno").value;
+    const box = document.getElementById("horarios");
+    const b = db.barberos.find(x => x.id === barberoActivo);
 
-const fecha =
-document.getElementById("fechaTurno").value;
+    if(!fecha || !b) return;
 
-const box =
-document.getElementById("horarios");
+    // Validación de Francos
+    if(b.francos && b.francos.includes(fecha)) {
+        box.innerHTML = `<div class="col-span-full py-6 text-center border border-red-500/20 bg-red-500/5 rounded-xl">
+            <span class="text-2xl block mb-2">🌴</span>
+            <p class="text-red-400 font-medium">El profesional se encuentra de franco en la fecha seleccionada.</p>
+            <p class="text-xs opacity-60 mt-1">Por favor, elige otro día u otro profesional.</p>
+        </div>`;
+        return;
+    }
 
-const b =
-db.barberos.find(x=>x.id===barberoActivo);
+    if(!b.turnos[fecha]) b.turnos[fecha] = {};
 
-if(!fecha || !b) return;
-
-if(!b.turnos[fecha]){
-b.turnos[fecha] = {};
+    box.innerHTML = HORARIOS.map(h => {
+        const ocupado = b.turnos[fecha][h];
+        if(ocupado){
+            return `<div class="p-4 rounded-xl bg-white/5 opacity-40 text-center text-xs flex flex-col justify-center items-center h-full border border-transparent">
+                <span class="line-through block mb-1">${h}</span> Reservado
+            </div>`;
+        }
+        return `<button onclick="seleccionarHora('${h}',this)" class="slot border border-white/10 rounded-xl p-4 hover:border-yellow-500/50 hover:bg-white/5 font-medium">
+            ${h}
+        </button>`;
+    }).join("");
 }
 
-box.innerHTML = HORARIOS.map(h=>{
-
-const ocupado = b.turnos[fecha][h];
-
-if(ocupado){
-
-return `
-<div class="p-4 rounded-2xl bg-white/5 opacity-30 text-center text-xs">
-${h}<br>Ocupado
-</div>
-`;
-
-}
-
-return `
-<button
-onclick="seleccionarHora('${h}',this)"
-class="slot border border-white/10 rounded-2xl p-4 hover:border-yellow-500">
-${h}
-</button>
-`;
-
-}).join("");
-
-}
-
-function seleccionarHora(h,btn){
-
-horaSeleccionada = h;
-
-document.querySelectorAll(".slot").forEach(x=>{
-x.classList.remove("active");
-});
-
-btn.classList.add("active");
-
+function seleccionarHora(h, btn){
+    horaSeleccionada = h;
+    document.querySelectorAll(".slot").forEach(x => x.classList.remove("active"));
+    btn.classList.add("active");
 }
 
 function confirmarDatos(){
-
-const fecha =
-document.getElementById("fechaTurno").value;
-
-if(!clienteNombre){
-return alert("Ingresá tu nombre.");
-}
-
-if(!fecha){
-return alert("Elegí una fecha.");
-}
-
-if(!barberoActivo){
-return alert("Elegí un barbero.");
-}
-
-if(servicios.length===0){
-return alert("Elegí un servicio.");
-}
-
-if(!horaSeleccionada){
-return alert("Elegí un horario.");
-}
-
-alert(
-`Turno listo para reservar:\n\nCliente: ${clienteNombre}\nFecha: ${fecha}\nHora: ${horaSeleccionada}`
-);
-
+    const fecha = document.getElementById("fechaTurno").value;
+    if(!clienteNombre) return alert("Ingresá tu nombre.");
+    if(!fecha) return alert("Elegí una fecha.");
+    if(!barberoActivo) return alert("Elegí un profesional.");
+    if(servicios.length === 0) return alert("Elegí al menos un servicio.");
+    if(!horaSeleccionada) return alert("Elegí un horario disponible.");
+    
+    alert(`Resumen de Cita:\n\n👤 Cliente: ${clienteNombre}\n📅 Fecha: ${fecha}\n⏰ Hora: ${horaSeleccionada}\n✂️ Servicios: ${servicios.join(", ")}`);
 }
 
 function abrirPago(){
-
-if(!horaSeleccionada){
-return alert("Elegí un horario.");
-}
-
-const b = db.barberos.find(x=>x.id===barberoActivo);
-
-document.getElementById("aliasPago").innerText = b.alias;
-
-document.getElementById("modalPago").classList.remove("hidden");
-
+    if(!horaSeleccionada) return alert("Debes seleccionar un horario primero.");
+    const b = db.barberos.find(x => x.id === barberoActivo);
+    document.getElementById("aliasPago").innerText = b.alias;
+    document.getElementById("modalPago").classList.remove("hidden");
 }
 
 function cerrarModal(){
-document.getElementById("modalPago").classList.add("hidden");
+    document.getElementById("modalPago").classList.add("hidden");
 }
 
 function confirmarReserva(pago){
+    const fecha = document.getElementById("fechaTurno").value;
+    const b = db.barberos.find(x => x.id === barberoActivo);
 
-const fecha =
-document.getElementById("fechaTurno").value;
+    if(!clienteNombre || servicios.length === 0 || !horaSeleccionada) {
+        return alert("Faltan datos para confirmar la reserva.");
+    }
 
-const b =
-db.barberos.find(x=>x.id===barberoActivo);
+    if(!b.turnos[fecha]) b.turnos[fecha] = {};
+    if(b.turnos[fecha][horaSeleccionada]) return alert("El horario acaba de ser ocupado.");
 
-if(!clienteNombre){
-return alert("Ingresá tu nombre.");
-}
+    b.turnos[fecha][horaSeleccionada] = {
+        cliente: clienteNombre,
+        servicios: servicios.join(", "),
+        pago: pago,
+        observacion: ""
+    };
 
-if(servicios.length===0){
-return alert("Elegí un servicio.");
-}
-
-if(!horaSeleccionada){
-return alert("Elegí un horario.");
-}
-
-if(!b.turnos[fecha]){
-b.turnos[fecha]={};
-}
-
-if(b.turnos[fecha][horaSeleccionada]){
-return alert("Ese horario ya fue reservado.");
-}
-
-b.turnos[fecha][horaSeleccionada] = {
-cliente:clienteNombre,
-servicios:servicios.join(", "),
-pago:pago,
-observacion:""
-};
-
-save();
-
-alert("Turno reservado correctamente");
-
-location.reload();
-
+    save();
+    alert("¡Turno reservado exitosamente!");
+    location.reload();
 }
 
 function loginInterno(){
+    const pin = prompt("🔐 Ingresar PIN de Acceso:");
+    if(!pin) return;
 
-const pin = prompt("Ingresar PIN");
+    if(pin === "0602" || pin === db.admin_pin){
+        admin = true;
+        barberoActivo = db.barberos[0].id;
+        abrirPanel();
+        return;
+    }
 
-if(!pin) return;
-
-if(pin==="0602" || pin===db.admin_pin){
-
-admin = true;
-
-barberoActivo = db.barberos[0].id;
-
-abrirPanel();
-
-return;
-
-}
-
-const b = db.barberos.find(x=>x.pin===pin);
-
-if(b){
-
-admin = false;
-
-barberoActivo = b.id;
-
-abrirPanel();
-
-return;
-
-}
-
-alert("PIN incorrecto");
-
+    const b = db.barberos.find(x => x.pin === pin);
+    if(b){
+        admin = false;
+        barberoActivo = b.id;
+        abrirPanel();
+        return;
+    }
+    alert("PIN incorrecto. Acceso denegado.");
 }
 
 function abrirPanel(){
+    document.getElementById("pantallaInicio").classList.add("hidden");
+    document.getElementById("pantallaCliente").classList.add("hidden");
+    document.getElementById("panelInterno").classList.remove("hidden");
+    document.getElementById("btnLogout").classList.remove("hidden");
+    
+    document.getElementById("fechaAgenda").value = new Date().toISOString().split("T")[0];
 
-document.getElementById("pantallaInicio").classList.add("hidden");
-document.getElementById("pantallaCliente").classList.add("hidden");
+    if(!admin){
+        document.querySelectorAll(".adminOnly").forEach(x => x.classList.add("hidden"));
+    }
 
-document.getElementById("panelInterno").classList.remove("hidden");
-
-document.getElementById("btnLogout").classList.remove("hidden");
-
-document.getElementById("fechaAgenda").value =
-new Date().toISOString().split("T")[0];
-
-if(admin){
-
-document.getElementById("statsAdmin").classList.remove("hidden");
-
-}else{
-
-document.querySelectorAll(".adminOnly").forEach(x=>{
-x.classList.add("hidden");
-});
-
-}
-
-actualizarStats();
-
-renderAgenda();
-
-renderGastos();
-
-renderGanancias();
-
-renderBarberosPanel();
-
-renderConfig();
-
+    document.getElementById("inputDias").value = db.dias_trabajados;
+    
+    renderAgenda();
+    if(admin) {
+        renderGastos();
+        renderGanancias();
+        renderBarberosPanel();
+        renderConfig();
+    }
 }
 
 function verTab(tab){
+    document.querySelectorAll(".tab-btn").forEach(x => x.classList.remove("active"));
+    event.target.classList.add("active");
 
-document.querySelectorAll(".tab-btn").forEach(x=>{
-x.classList.remove("active");
-});
+    ["tabAgenda", "tabGastos", "tabGanancias", "tabBarberos", "tabConfig"].forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+    });
 
-event.target.classList.add("active");
-
-document.getElementById("tabAgenda").classList.add("hidden");
-document.getElementById("tabGastos").classList.add("hidden");
-document.getElementById("tabGanancias").classList.add("hidden");
-document.getElementById("tabBarberos").classList.add("hidden");
-document.getElementById("tabConfig").classList.add("hidden");
-
-if(tab==="agenda"){
-document.getElementById("tabAgenda").classList.remove("hidden");
-}
-
-if(tab==="gastos"){
-document.getElementById("tabGastos").classList.remove("hidden");
-}
-
-if(tab==="ganancias"){
-document.getElementById("tabGanancias").classList.remove("hidden");
-}
-
-if(tab==="barberos"){
-document.getElementById("tabBarberos").classList.remove("hidden");
-}
-
-if(tab==="config"){
-document.getElementById("tabConfig").classList.remove("hidden");
-}
-
+    const activeTab = document.getElementById("tab" + tab.charAt(0).toUpperCase() + tab.slice(1));
+    if(activeTab) activeTab.classList.remove("hidden");
 }
 
 function renderAgenda(){
+    const fecha = document.getElementById("fechaAgenda").value;
+    const tbody = document.getElementById("agendaBody");
+    const b = db.barberos.find(x => x.id === barberoActivo);
+    if(!b) return;
 
-const fecha =
-document.getElementById("fechaAgenda").value;
+    const turnos = b.turnos[fecha] || {};
 
-const tbody =
-document.getElementById("agendaBody");
-
-const b =
-db.barberos.find(x=>x.id===barberoActivo);
-
-if(!b) return;
-
-const turnos = b.turnos[fecha] || {};
-
-tbody.innerHTML = HORARIOS.map(h=>{
-
-const t = turnos[h];
-
-return `
-<tr class="border-b border-white/5">
-
-<td class="p-3">${h}</td>
-
-<td class="p-3">
-${t ? t.cliente : '-'}
-</td>
-
-<td class="p-3">
-${t ? t.servicios : '-'}
-</td>
-
-<td class="p-3">
-${t ? t.pago : '-'}
-</td>
-
-<td class="p-3">
-
-${t ? `
-<textarea
-onchange="guardarObservacion('${fecha}','${h}',this.value)"
-placeholder="Observación..."
-class="text-sm">${t.observacion || ''}</textarea>
-` : '-'}
-
-</td>
-
-</tr>
-`;
-
-}).join("");
-
+    tbody.innerHTML = HORARIOS.map(h => {
+        const t = turnos[h];
+        if(!t) return `<tr class="border-b border-white/5 opacity-40 hover:opacity-100 transition-opacity"><td class="p-4">${h}</td><td class="p-4" colspan="4">Libre</td></tr>`;
+        
+        return `
+        <tr class="border-b border-white/5 bg-white/5">
+            <td class="p-4 font-bold text-gold">${h}</td>
+            <td class="p-4 font-medium">${t.cliente}</td>
+            <td class="p-4 text-xs bg-white/5 rounded-lg inline-block mt-2">${t.servicios}</td>
+            <td class="p-4"><span class="px-2 py-1 rounded-md text-xs border ${t.pago==='Efectivo' ? 'border-green-500/50 text-green-400' : 'border-blue-500/50 text-blue-400'}">${t.pago}</span></td>
+            <td class="p-4">
+                <textarea onchange="guardarObservacion('${fecha}','${h}',this.value)" placeholder="Notas internas..." class="text-xs p-2 h-10 resize-none bg-transparent border-white/10 focus:bg-white/10">${t.observacion || ''}</textarea>
+            </td>
+        </tr>`;
+    }).join("");
 }
 
-function guardarObservacion(fecha,hora,texto){
+function guardarObservacion(fecha, hora, texto){
+    const b = db.barberos.find(x => x.id === barberoActivo);
+    b.turnos[fecha][hora].observacion = texto;
+    save();
+}
 
-const b =
-db.barberos.find(x=>x.id===barberoActivo);
-
-b.turnos[fecha][hora].observacion = texto;
-
-save();
-
+function actualizarDias(val){
+    const dias = parseInt(val);
+    if(dias > 0 && dias <= 31) {
+        db.dias_trabajados = dias;
+        save();
+        renderGastos();
+        renderGanancias();
+    }
 }
 
 function agregarGasto(){
+    const detalle = prompt("Descripción del gasto:");
+    if(!detalle) return;
+    const monto = prompt("Monto total ($):");
+    if(!monto || isNaN(monto)) return alert("Monto inválido");
 
-const detalle = prompt("Detalle");
-const monto = prompt("Monto");
+    db.gastos.push({
+        id: Date.now(),
+        fecha: new Date().toISOString().split("T")[0],
+        detalle,
+        monto: Number(monto)
+    });
+    save();
+    renderGastos();
+    renderGanancias();
+}
 
-if(!detalle || !monto) return;
-
-db.gastos.push({
-fecha:new Date().toISOString().split("T")[0],
-detalle,
-monto:Number(monto)
-});
-
-save();
-
-renderGastos();
-
-actualizarStats();
-
+function eliminarGasto(id){
+    if(!confirm("¿Borrar este gasto?")) return;
+    db.gastos = db.gastos.filter(g => g.id !== id);
+    save();
+    renderGastos();
+    renderGanancias();
 }
 
 function renderGastos(){
+    const gastosTotales = db.gastos.reduce((acc, val) => acc + val.monto, 0);
+    const dias = db.dias_trabajados || 24;
+    const gastoDiario = gastosTotales / dias;
 
-document.getElementById("listaGastos").innerHTML =
-[...db.gastos].reverse().map(g=>`
+    document.getElementById("statGastosTotales").innerText = "$" + gastosTotales.toLocaleString('es-AR');
+    document.getElementById("statGastoDiario").innerHTML = "$" + gastoDiario.toLocaleString('es-AR', {maximumFractionDigits: 2}) + ' <span class="text-sm font-normal opacity-60">/día</span>';
 
-<div class="glass p-4 mb-3 flex justify-between">
-
-<div>
-<p>${g.detalle}</p>
-<p class="text-xs opacity-50">${g.fecha}</p>
-</div>
-
-<div class="text-red-400 font-bold">
--$${g.monto}
-</div>
-
-</div>
-
-`).join("");
-
-}
-
-function actualizarStats(){
-
-let caja = 0;
-let turnos = 0;
-
-db.barberos.forEach(b=>{
-
-Object.values(b.turnos).forEach(dia=>{
-
-turnos += Object.keys(dia).length;
-
-caja += Object.keys(dia).length * 10000;
-
-});
-
-});
-
-const gastos =
-db.gastos.reduce((a,b)=>a+b.monto,0);
-
-const ganancia = caja - gastos;
-
-document.getElementById("statCaja").innerText =
-"$"+caja;
-
-document.getElementById("statGastos").innerText =
-"-$"+gastos;
-
-document.getElementById("statGanancia").innerText =
-"$"+ganancia;
-
-document.getElementById("statTurnos").innerText =
-turnos;
-
+    document.getElementById("listaGastos").innerHTML = [...db.gastos].reverse().map(g => `
+        <div class="bg-white/5 p-4 rounded-xl flex justify-between items-center border border-white/5 hover:border-white/10 transition-colors">
+            <div>
+                <p class="font-medium">${g.detalle}</p>
+                <p class="text-xs opacity-50 mt-1">${g.fecha}</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-red-400 font-bold">-$${g.monto.toLocaleString('es-AR')}</span>
+                <button onclick="eliminarGasto(${g.id})" class="text-xs text-white/40 hover:text-red-400" title="Eliminar">✕</button>
+            </div>
+        </div>
+    `).join("") || '<p class="text-center opacity-50 py-4">No hay gastos registrados.</p>';
 }
 
 function renderGanancias(){
+    let cajaBruta = 0;
+    let turnosTotales = 0;
 
-let caja = 0;
+    db.barberos.forEach(b => {
+        Object.values(b.turnos).forEach(dia => {
+            const count = Object.keys(dia).length;
+            turnosTotales += count;
+            cajaBruta += count * 10000; // Asumiendo $10.000 promedio por turno según código original
+        });
+    });
 
-db.barberos.forEach(b=>{
+    const gastosTotales = db.gastos.reduce((a,b) => a + b.monto, 0);
+    const dias = db.dias_trabajados || 24;
+    const gananciaNeta = cajaBruta - gastosTotales;
+    
+    const ingresoDiario = cajaBruta / dias;
+    const gananciaDiaria = gananciaNeta / dias;
 
-Object.values(b.turnos).forEach(dia=>{
-caja += Object.keys(dia).length * 10000;
-});
-
-});
-
-const gastos =
-db.gastos.reduce((a,b)=>a+b.monto,0);
-
-const ganancia = caja-gastos;
-
-document.getElementById("gananciasBox").innerHTML = `
-
-<div class="grid md:grid-cols-3 gap-4">
-
-<div class="glass p-5">
-<p class="opacity-60 text-xs uppercase">
-Ingresos
-</p>
-<h2 class="text-3xl font-bold mt-2">
-$${caja}
-</h2>
-</div>
-
-<div class="glass p-5">
-<p class="opacity-60 text-xs uppercase">
-Gastos
-</p>
-<h2 class="text-3xl font-bold mt-2 text-red-400">
-$${gastos}
-</h2>
-</div>
-
-<div class="glass p-5">
-<p class="opacity-60 text-xs uppercase">
-Ganancia Neta
-</p>
-<h2 class="text-3xl font-bold mt-2 text-green-400">
-$${ganancia}
-</h2>
-</div>
-
-</div>
-
-`;
-
+    document.getElementById("gananciasBox").innerHTML = `
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white/5 p-6 rounded-xl border border-white/10 border-l-4 border-l-blue-500">
+                <p class="opacity-60 text-xs uppercase tracking-widest">Ingreso Bruto Total</p>
+                <h2 class="text-3xl font-bold mt-2">$${cajaBruta.toLocaleString('es-AR')}</h2>
+                <p class="text-xs mt-2 opacity-60">~$${ingresoDiario.toLocaleString('es-AR',{maximumFractionDigits:0})} por día trab.</p>
+            </div>
+            <div class="bg-white/5 p-6 rounded-xl border border-white/10 border-l-4 border-l-red-500">
+                <p class="opacity-60 text-xs uppercase tracking-widest">Gastos Totales</p>
+                <h2 class="text-3xl font-bold mt-2 text-red-400">-$${gastosTotales.toLocaleString('es-AR')}</h2>
+                <p class="text-xs mt-2 opacity-60 text-red-400/60">Calculado sobre ${dias} días</p>
+            </div>
+            <div class="bg-white/5 p-6 rounded-xl border border-white/10 border-l-4 border-l-green-500">
+                <p class="opacity-60 text-xs uppercase tracking-widest">Ganancia Neta</p>
+                <h2 class="text-3xl font-bold mt-2 text-green-400">$${gananciaNeta.toLocaleString('es-AR')}</h2>
+                <p class="text-xs mt-2 opacity-60 text-green-400/60">~$${gananciaDiaria.toLocaleString('es-AR',{maximumFractionDigits:0})} ganancia diaria</p>
+            </div>
+        </div>
+        <div class="bg-white/5 p-4 rounded-xl inline-block border border-white/10">
+            <span class="text-sm opacity-80">Total de Servicios Completados: <strong class="text-white text-lg ml-2">${turnosTotales}</strong></span>
+        </div>
+    `;
 }
 
 function renderBarberosPanel(){
+    document.getElementById("panelBarberos").innerHTML = db.barberos.map(b => {
+        let turnosBarbero = 0;
+        Object.values(b.turnos).forEach(dia => turnosBarbero += Object.keys(dia).length);
 
-document.getElementById("panelBarberos").innerHTML =
-db.barberos.map(b=>{
+        const francosHtml = (b.francos || []).map(f => `
+            <span class="inline-flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-lg text-xs">
+                ${f} 
+                <button onclick="quitarFranco(${b.id}, '${f}')" class="text-red-400 hover:text-red-300 font-bold ml-1">✕</button>
+            </span>
+        `).join("");
 
-let total = 0;
+        return `
+        <div class="bg-white/5 p-6 rounded-xl border border-white/10">
+            <div class="flex items-center gap-4 mb-6 pb-4 border-b border-white/5">
+                <img src="${b.foto}" class="w-16 h-16 rounded-full object-cover">
+                <div>
+                    <h2 class="text-xl font-semibold">${b.nombre}</h2>
+                    <p class="opacity-60 text-sm mt-1">Rendimiento: <span class="text-gold font-medium">${turnosBarbero} turnos</span></p>
+                </div>
+            </div>
+            
+            <div>
+                <h3 class="text-sm font-medium mb-3 opacity-80">Gestión de Francos</h3>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    ${francosHtml || '<span class="text-xs opacity-40">No hay francos asignados</span>'}
+                </div>
+                <div class="flex gap-2">
+                    <input type="date" id="franco-input-${b.id}" class="text-sm p-2 w-auto bg-black/20">
+                    <button onclick="agregarFranco(${b.id})" class="bg-white/10 hover:bg-white/20 px-4 rounded-xl text-sm transition-colors">Añadir Franco</button>
+                </div>
+            </div>
+        </div>`;
+    }).join("");
+}
 
-Object.values(b.turnos).forEach(dia=>{
-total += Object.keys(dia).length;
-});
+function agregarFranco(id){
+    const dateInput = document.getElementById(`franco-input-${id}`).value;
+    if(!dateInput) return alert("Selecciona una fecha");
+    
+    const b = db.barberos.find(x => x.id === id);
+    if(!b.francos.includes(dateInput)){
+        b.francos.push(dateInput);
+        b.francos.sort();
+        save();
+        renderBarberosPanel();
+    }
+}
 
-return `
-
-<div class="glass p-5 mb-4">
-
-<div class="flex items-center gap-4">
-
-<img src="${b.foto}" class="w-14 h-14 rounded-full">
-
-<div>
-<h2 class="text-xl font-bold">${b.nombre}</h2>
-<p class="opacity-60 text-sm">
-${total} turnos realizados
-</p>
-</div>
-
-</div>
-
-</div>
-
-`;
-
-}).join("");
-
+function quitarFranco(id, fecha){
+    const b = db.barberos.find(x => x.id === id);
+    b.francos = b.francos.filter(f => f !== fecha);
+    save();
+    renderBarberosPanel();
 }
 
 function renderConfig(){
-
-document.getElementById("adminPinInput").value =
-db.admin_pin;
-
-document.getElementById("configBarberos").innerHTML =
-db.barberos.map(b=>`
-
-<div class="glass p-5 mb-4">
-
-<div class="grid md:grid-cols-4 gap-4">
-
-<input
-value="${b.nombre}"
-onchange="editarBarbero(${b.id},'nombre',this.value)">
-
-<input
-value="${b.alias}"
-onchange="editarBarbero(${b.id},'alias',this.value)">
-
-<input
-value="${b.pin}"
-onchange="editarBarbero(${b.id},'pin',this.value)">
-
-<input
-value="${b.foto}"
-onchange="editarBarbero(${b.id},'foto',this.value)">
-
-</div>
-
-</div>
-
-`).join("");
-
+    document.getElementById("adminPinInput").value = db.admin_pin;
+    document.getElementById("configBarberos").innerHTML = db.barberos.map(b => `
+        <div class="bg-white/5 p-5 rounded-xl border border-white/10">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div><label class="text-xs opacity-50 ml-1">Nombre</label><input value="${b.nombre}" onchange="editarBarbero(${b.id},'nombre',this.value)" class="mt-1 text-sm"></div>
+                <div><label class="text-xs opacity-50 ml-1">Alias Pago</label><input value="${b.alias}" onchange="editarBarbero(${b.id},'alias',this.value)" class="mt-1 text-sm"></div>
+                <div><label class="text-xs opacity-50 ml-1">PIN Acceso</label><input value="${b.pin}" onchange="editarBarbero(${b.id},'pin',this.value)" class="mt-1 text-sm"></div>
+                <div><label class="text-xs opacity-50 ml-1">URL Avatar</label><input value="${b.foto}" onchange="editarBarbero(${b.id},'foto',this.value)" class="mt-1 text-sm"></div>
+            </div>
+        </div>
+    `).join("");
 }
 
-function editarBarbero(id,campo,valor){
-
-const b =
-db.barberos.find(x=>x.id===id);
-
-b[campo]=valor;
-
+function editarBarbero(id, campo, valor){
+    const b = db.barberos.find(x => x.id === id);
+    b[campo] = valor;
 }
 
 function agregarBarbero(){
-
-db.barberos.push({
-id:Date.now(),
-nombre:"Nuevo",
-pin:"0000",
-alias:"nuevo.mp",
-foto:"https://ui-avatars.com/api/?name=Nuevo",
-turnos:{}
-});
-
-renderConfig();
-
+    const newName = "Nuevo_" + Date.now().toString().slice(-4);
+    db.barberos.push({
+        id: Date.now(),
+        nombre: newName,
+        pin: "0000",
+        alias: "alias.mp",
+        foto: `https://ui-avatars.com/api/?name=${newName}&background=random`,
+        turnos: {},
+        francos: []
+    });
+    renderConfig();
 }
 
 function guardarTodo(){
-
-db.admin_pin =
-document.getElementById("adminPinInput").value;
-
-save();
-
-alert("Configuración guardada");
-
-location.reload();
-
+    db.admin_pin = document.getElementById("adminPinInput").value;
+    save();
+    alert("Parámetros del sistema actualizados.");
+    location.reload();
 }
 
 function enviarWhatsApp(){
+    const fecha = document.getElementById("fechaAgenda").value;
+    const b = db.barberos.find(x => x.id === barberoActivo);
+    const turnos = b.turnos[fecha] || {};
+    let texto = `*Agenda ${b.nombre} - ${fecha}*\n`;
+    
+    const turnosOrdenados = HORARIOS.filter(h => turnos[h]);
+    if(turnosOrdenados.length === 0) texto += "\nNo hay turnos para este día.";
 
-const fecha =
-document.getElementById("fechaAgenda").value;
+    turnosOrdenados.forEach(hora => {
+        texto += `\n⏰ ${hora} - ${turnos[hora].cliente} (${turnos[hora].servicios})`;
+    });
 
-const b =
-db.barberos.find(x=>x.id===barberoActivo);
-
-const turnos = b.turnos[fecha] || {};
-
-let texto = `*Agenda ${b.nombre}*\n`;
-
-Object.entries(turnos).forEach(([hora,t])=>{
-
-texto += `\n${hora} - ${t.cliente}`;
-
-});
-
-window.open(
-`https://wa.me/?text=${encodeURIComponent(texto)}`,
-"_blank"
-);
-
+    window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, "_blank");
 }
 
-function logout(){
-location.reload();
-}
+function logout(){ location.reload(); }
 
-document.getElementById("fechaTurno").value =
-new Date().toISOString().split("T")[0];
-
+document.getElementById("fechaTurno").value = new Date().toISOString().split("T")[0];
 renderBarberos();
-
 </script>
-
 </body>
 </html>
